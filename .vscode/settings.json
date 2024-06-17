@@ -1,0 +1,36 @@
+{
+  "editor.autoIndent": "full",
+  "editor.cursorBlinking": "solid",
+  "editor.cursorSmoothCaretAnimation": "on",
+  "editor.cursorStyle": "line",
+  "editor.fontLigatures": true,
+  "editor.letterSpacing": 0.5,
+  "editor.lineHeight": 24,
+  "editor.minimap.enabled": true,
+  "editor.renderWhitespace": "none",
+  "editor.tabCompletion": "off",
+  "editor.tabSize": 2,
+  "editor.wordWrap": "off",
+  "files.defaultLanguage": "javascriptreact",
+  "files.trimTrailingWhitespace": true,
+  "javascript.format.semicolons": "insert",
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "javascript.preferences.quoteStyle": "single",
+  "editor.formatOnSave": true,
+  "javascript.referencesCodeLens.enabled": true,
+  "git.enableSmartCommit": true,
+  "editor.fontFamily": " 'monospace', monospace, 'Droid Sans Fallback'",
+  "javascript.suggest.completeFunctionCalls": true,
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[javascript]": {
+    "editor.maxTokenizationLineLength": 2500,
+    "editor.trimAutoWhitespace": true
+  },
+  "cSpell.words": ["describedby"],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "editor.formatOnType": true
+}
