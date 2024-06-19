@@ -9,7 +9,10 @@ import {
 import {SvgXml} from 'react-native-svg';
 import RadialGradient from 'react-native-radial-gradient';
 import {Button} from '../components';
-import {colors, fontSizes, radius, spacing} from '../styles';
+import {colors, fontFaces, fontSizes, radius, spacing} from '../styles';
+import {setWelcomeScreenDisplay} from '../reducers/welcome';
+import {useDispatch} from 'react-redux';
+import AppIcon from '../assets/icons/AppIcon.svg';
 
 const xml = `
  <svg
@@ -32,6 +35,11 @@ const xml = `
 `;
 
 const Welcome = () => {
+  const dispatch = useDispatch();
+
+  const handleButtonClick = () => {
+    dispatch(setWelcomeScreenDisplay(false));
+  };
   return (
     <View style={styles.container}>
       <RadialGradient
@@ -41,12 +49,11 @@ const Welcome = () => {
         center={[200, 350]}
         radius={300}>
         <View style={styles.logoContainer}>
-          <Text style={styles.northwestMonitoringText}>
-            NORTHWEST MONITORING
-          </Text>
+          <AppIcon style={styles.appIcon} />
         </View>
         <View style={styles.contentContainer}>
-          <Text style={styles.welcomeText}>Welcome!</Text>
+          <Text style={styles.backgroundNwmText}>NWM</Text>
+          <Text style={styles.welcomeText}>Welcome !</Text>
           <Text style={styles.description}>
             Lorem Ipsum has been the industry's standard
           </Text>
@@ -56,7 +63,7 @@ const Welcome = () => {
             textStyle={styles.buttonText}
             rippleContainerBorderRadius={radius.radius8}
             style={styles.button}
-            onPress={() => console.log('Login pressed')}
+            onPress={() => handleButtonClick()}
           />
         </View>
         <SvgXml xml={xml} width="100%" />
@@ -66,6 +73,10 @@ const Welcome = () => {
 };
 
 const styles = StyleSheet.create({
+  appIcon: {
+    marginBottom: spacing.sm,
+    top: -30,
+  },
   linearGradient: {
     width: '100%',
     height: '100%',
@@ -82,11 +93,11 @@ const styles = StyleSheet.create({
     marginTop: 100,
   },
   backgroundNwmText: {
-    fontSize: 128,
     fontWeight: '900',
+    fontSize: 128,
     color: '#05427D',
     position: 'absolute',
-    top: Dimensions.get('screen').height / 2 - 300,
+    top: Dimensions.get('screen').height / 2 - 375,
   },
   northwestMonitoringText: {
     fontSize: fontSizes.size24,
@@ -115,7 +126,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.radius4,
     paddingHorizontal: spacing.md,
     height: 45,
-    width: 200,
+    width: 250,
     alignItems: 'center',
   },
   buttonText: {

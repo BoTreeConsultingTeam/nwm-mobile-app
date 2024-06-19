@@ -4,6 +4,7 @@ import Input from './common/input';
 import FullScreenLoader from './common/loader';
 import NoInternetAlert from './common/noInternetAlert';
 import WithContainer from './common/withContainer';
+import DateTimePicker from './common/datePicker';
 
 export {
   Ripple,
@@ -12,4 +13,5 @@ export {
   FullScreenLoader,
   NoInternetAlert,
   WithContainer,
+  DateTimePicker,
 };

@@ -1,7 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
-  display: false,
+  display: true,
 };
 export const welcomeScreen = createSlice({
   name: 'welcome',

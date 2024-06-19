@@ -1,7 +1,8 @@
 import React from 'react';
-import {View, SafeAreaView, StyleSheet} from 'react-native';
+import {View, SafeAreaView, StyleSheet, ScrollView} from 'react-native';
 import {Appbar, Searchbar} from 'react-native-paper';
 import {FullScreenLoader, NoInternetAlert} from '../index';
+import {colors, spacing} from '../../styles';
 
 const WithContainer = ({
   onBackPress,
@@ -15,6 +16,8 @@ const WithContainer = ({
   children,
   loading,
   headerStyle,
+  scrollView,
+  scrollViewStyle,
 }) => {
   const Header = (
     <Appbar.Header style={[styles.header, headerStyle]}>
@@ -25,11 +28,13 @@ const WithContainer = ({
           value={searchValue}
           onChangeText={onSearchValueChange}
           placeholder={searchPlaceHolder}
-          style={[styles.searchBar, searchStyle]}
+          style={[styles.searchBar]}
           icon={'magnify'}
           mode="bar"
           onClearIconPress={onSearchValueChange}
           elevation={3}
+          inputStyle={searchStyle}
+          cursorColor={colors.primary}
         />
       ) : null}
       {actions.length
@@ -55,7 +60,13 @@ const WithContainer = ({
     <View style={styles.container}>
       {Header}
       {loading && <FullScreenLoader />}
-      {children}
+      {scrollView ? (
+        <SafeAreaView>
+          <ScrollView style={scrollViewStyle}>{children}</ScrollView>
+        </SafeAreaView>
+      ) : (
+        children
+      )}
       <SafeAreaView>
         <NoInternetAlert />
       </SafeAreaView>
@@ -68,7 +79,12 @@ const styles = StyleSheet.create({
   },
   searchBar: {
     backgroundColor: 'white',
-    margin: 0,
+    marginTop: 20,
+    marginLeft: 10,
+    textAlign: 'center',
+    width: '80%',
+    height: 50,
+    borderRadius: spacing.sm,
   },
 });
 export default WithContainer;

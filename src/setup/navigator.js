@@ -8,11 +8,24 @@ import {colors, fontFaces, fontSizes} from '../styles/index';
 import Welcome from '../screens/welcome';
 import Login from '../screens/login';
 import Home from '../screens/home';
+import ActiveProject from '../screens/activeProject';
+import ProjectDetails from '../screens/projectDetails';
+import Profile from '../screens/profile';
+import Recent from '../screens/recent';
+import PhotoEditor from '../screens/photoEditor';
+import {tabBarIconMapper, tabBarVisibilityMapper} from '../utility/mapper';
+import ProjectRequest from '../screens/request';
+import UploadPhoto from '../screens/uploadPhoto';
+import Note from '../screens/notes';
 
 const Tab = createBottomTabNavigator();
 
 const WelcomeNav = createStackNavigator();
 const AuthNav = createStackNavigator();
+const HomeNav = createStackNavigator();
+const RequestNav = createStackNavigator();
+const RecentNav = createStackNavigator();
+const ProfileNav = createStackNavigator();
 
 const WelcomeStack = () => (
   <WelcomeNav.Navigator
@@ -27,7 +40,7 @@ const WelcomeStack = () => (
 
 const AuthStack = () => (
   <AuthNav.Navigator
-    initialRouteName="home"
+    initialRouteName="login"
     screenOptions={{
       headerShown: false,
     }}
@@ -38,6 +51,54 @@ const AuthStack = () => (
   </AuthNav.Navigator>
 );
 
+const HomeStack = () => (
+  <HomeNav.Navigator
+    initialRouteName="home"
+    screenOptions={{
+      headerShown: false,
+    }}
+    defaultScreenOptions={{headerShown: false}}>
+    <HomeNav.Screen name="home" component={Home} />
+    <HomeNav.Screen name="projectDetails" component={ProjectDetails} />
+    <HomeNav.Screen name="uploadPhoto" component={UploadPhoto} />
+    <HomeNav.Screen name="note" component={Note} />
+  </HomeNav.Navigator>
+);
+
+const RequestStack = () => (
+  <RequestNav.Navigator
+    initialRouteName="request"
+    screenOptions={{
+      headerShown: false,
+    }}
+    defaultScreenOptions={{headerShown: false}}>
+    <RequestNav.Screen name="request" component={ProjectRequest} />
+  </RequestNav.Navigator>
+);
+
+const RecentStack = () => (
+  <RecentNav.Navigator
+    initialRouteName="recent"
+    screenOptions={{
+      headerShown: false,
+    }}
+    defaultScreenOptions={{headerShown: false}}>
+    <RecentNav.Screen name="recent" component={Recent} />
+    <RecentNav.Screen name="photo-editor" component={PhotoEditor} />
+  </RecentNav.Navigator>
+);
+
+const ProfileStack = () => (
+  <ProfileNav.Navigator
+    initialRouteName="me"
+    screenOptions={{
+      headerShown: false,
+    }}
+    defaultScreenOptions={{headerShown: false}}>
+    <ProfileNav.Screen name="me" component={Profile} />
+  </ProfileNav.Navigator>
+);
+
 const TabNavigator = () => {
   const tabBarTitleMapper = {
     homeStack: {
@@ -46,11 +107,11 @@ const TabNavigator = () => {
     requestStack: {
       title: 'Request',
     },
-    recent: {
+    recentStack: {
       title: 'Recent',
     },
-    meStack: {
-      title: 'Me',
+    profileStack: {
+      title: 'Profile',
     },
   };
 
@@ -58,8 +119,8 @@ const TabNavigator = () => {
     <Tab.Navigator
       screenOptions={({route}) => ({
         tabBarIcon: ({focused}) => {
-          const Icon = '';
-          // tabBarIconMapper[route.name][focused ? 'active' : 'inactive'];
+          const Icon =
+            tabBarIconMapper[route.name][focused ? 'active' : 'inactive'];
           return (
             <Icon
               style={styles.navIcon}
@@ -74,7 +135,7 @@ const TabNavigator = () => {
             style={[
               styles.navText,
               {
-                // color: focused ? colors.textSecondary : colors.text2,
+                color: focused ? colors.primary : colors.text,
               },
             ]}>
             {tabBarTitleMapper[route.name]?.title}
@@ -83,10 +144,10 @@ const TabNavigator = () => {
         tabBarStyle: [
           styles.tabBar,
           {
-            // display:
-            //   tabBarVisibilityMapper[
-            //     getFocusedRouteNameFromRoute(route) || route?.name
-            //   ] || "flex",
+            display:
+              tabBarVisibilityMapper[
+                getFocusedRouteNameFromRoute(route) || route?.name
+              ] || 'flex',
           },
         ],
         tabBarItemStyle:
@@ -94,7 +155,10 @@ const TabNavigator = () => {
         headerShown: false,
       })}
       initialRouteName="homeStack">
-      {/* <Tab.Screen name="homeStack" component={HomeStack} /> */}
+      <Tab.Screen name="homeStack" component={HomeStack} />
+      <Tab.Screen name="requestStack" component={RequestStack} />
+      <Tab.Screen name="recentStack" component={RecentStack} />
+      <Tab.Screen name="profileStack" component={ProfileStack} />
     </Tab.Navigator>
   );
 };
@@ -116,7 +180,7 @@ const Navigator = props => {
 
 const styles = StyleSheet.create({
   navText: {
-    // ...fontFaces.regular.medium,
+    ...fontFaces.regular.medium,
     fontSize: fontSizes.size11,
     lineHeight: 12.6,
     letterSpacing: 0.1,

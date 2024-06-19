@@ -5,6 +5,8 @@ import {SvgXml} from 'react-native-svg';
 import {Input, Button} from '../components';
 import {colors, fontSizes, radius, spacing} from '../styles';
 import AppIcon from '../assets/icons/AppIcon.svg';
+import {useDispatch} from 'react-redux';
+import {setToken} from '../reducers/login';
 
 const xml = `
  <svg
@@ -27,6 +29,11 @@ const xml = `
 `;
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const handleLogin = () => {
+    dispatch(setToken('token'));
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
@@ -57,7 +64,7 @@ const Login = () => {
                   textStyle={styles.buttonText}
                   rippleContainerBorderRadius={radius.radius8}
                   style={styles.button}
-                  onPress={() => console.log('Login pressed')}
+                  onPress={() => handleLogin()}
                 />
               </View>
             );

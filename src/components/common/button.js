@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, StyleSheet, Keyboard, Sp} from 'react-native';
+import {Text, StyleSheet, Keyboard} from 'react-native';
 import {Ripple} from '../index';
 import {
   colors,
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: fontSizes.size16,
     // lineHeight: 24,
-    color: colors.textWhite,
+    color: colors.white,
     alignSelf: 'center',
     letterSpacing: 0.25,
   },
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.25,
   },
   button: {
-    backgroundColor: colors.backgroundMediumRed,
+    backgroundColor: colors.borderMain,
     padding: spacing.sm,
     paddingTop: 0,
     paddingBottom: 0,
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 48,
     borderWidth: 1,
-    borderColor: colors.borderMediumRed,
+    borderColor: colors.borderMain,
   },
   buttonIcon: {
     color: colors.iconWhite,
