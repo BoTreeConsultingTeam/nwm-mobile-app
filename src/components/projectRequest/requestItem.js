@@ -7,7 +7,7 @@ import Button from '../common/button';
 import LocationPinIcon from '../../assets/icons/location-pin.svg';
 import DemoImage from '../../assets/icons/demo.png';
 
-const RequestItem = () => {
+const RequestItem = ({item, index}) => {
   return (
     <Card
       style={styles.card}
@@ -21,32 +21,36 @@ const RequestItem = () => {
         // onPress={() => navigation.navigate('photo-editor')}
       >
         <View style={styles.imageView}>
-          <Image source={DemoImage} style={styles.image} />
+          <Image source={item.image} style={styles.image} />
         </View>
         <View style={styles.detailsView}>
           <View style={styles.title}>
-            <Text style={styles.titleText}>Pancham icon</Text>
-            <Text>1 day ago</Text>
+            <Text style={styles.titleText}>{item.name}</Text>
+            <Text>{item.time}</Text>
           </View>
           <View style={styles.location}>
             <LocationPinIcon style={styles.locationIcon} />
-            <Text>Ahmedabad, Gujarat</Text>
+            <Text>{item.location}</Text>
           </View>
           <View style={styles.buttonView}>
-            <Button
-              text={'Accept'}
-              isLoading={false}
-              textStyle={styles.buttonText}
-              rippleContainerBorderRadius={radius.radius4}
-              style={styles.button}
-            />
-            <Button
-              text={'Reject'}
-              isLoading={false}
-              textStyle={styles.rejectText}
-              rippleContainerBorderRadius={radius.radius4}
-              style={styles.rejectButton}
-            />
+            {[1, 2, 3].includes(index + 1) && (
+              <Button
+                text={[3].includes(index + 1) ? 'Accepted' : 'Accept'}
+                isLoading={false}
+                textStyle={styles.buttonText}
+                rippleContainerBorderRadius={radius.radius4}
+                style={styles.button}
+              />
+            )}
+            {[1, 2, 4].includes(index + 1) && (
+              <Button
+                text={[4].includes(index + 1) ? 'Rejected' : 'Reject'}
+                isLoading={false}
+                textStyle={styles.rejectText}
+                rippleContainerBorderRadius={radius.radius4}
+                style={styles.rejectButton}
+              />
+            )}
           </View>
         </View>
       </View>

@@ -13,10 +13,14 @@ const Input = ({
   onBlur,
   onFocus,
   inputStyle,
+  dense,
+  multiline,
+  numberOfLines,
 }) => {
   return (
     <View>
       <TextInput
+        dense={dense}
         label={floatingLabel}
         placeholder={placeHolder}
         value={value}
@@ -31,6 +35,8 @@ const Input = ({
         underlineStyle={style.underlineStyle}
         activeUnderlineColor={'#00529B'}
         selectionColor={'#00529B'}
+        multiline={multiline}
+        numberOfLines={numberOfLines}
       />
     </View>
   );

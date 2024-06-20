@@ -18,41 +18,66 @@ const ActiveProject = ({navigation}) => {
       address: 'Nilamber Triumph / 3409',
       location: 'S.G. Highway, Rajpath Club, Ahmedabad, Gujrat',
       status: 'assigned',
+      person1: 'Joseph ',
+      person2: 'Shawn ',
+      start: 'Mon, Nov 28',
+      end: 'Thu, Jan 28',
     },
     {
-      name: 'Pancham Icon',
-      address: 'Nilamber Triumph / 3409',
-      location: 'S.G. Highway, Rajpath Club, Ahmedabad, Gujrat',
+      name: 'Missoula',
+      address: '182 Lords Way',
+      location: 'Sardis, TN 3837',
       status: 're-work',
+      person1: 'Allen ',
+      person2: 'David ',
+      start: 'Wed, Jun 28',
+      end: 'Fri, Oct 21',
     },
     {
-      name: 'Pancham Icon',
-      address: 'Nilamber Triumph / 3409',
-      location: 'S.G. Highway, Rajpath Club, Ahmedabad, Gujrat',
+      name: 'Quincy',
+      address: '3592 Ocello Street',
+      location: 'San Diego, CA 92103',
       status: 'assigned',
+      person1: 'Bradley ',
+      person2: 'Candace ',
+      start: 'Mon, Mar 06',
+      end: 'Fri, Jul 28',
     },
     {
-      name: 'Pancham Icon',
-      address: 'Nilamber Triumph / 3409',
-      location: 'S.G. Highway, Rajpath Club, Ahmedabad, Gujrat',
+      name: 'Kasper Bliss',
+      address: '5 Horizon Circle',
+      location: 'Tacoma, WA 98402',
       status: 'completed',
+      person1: 'Joseph ',
+      person2: 'Shawn',
+      start: 'Thu, Jan 25',
+      edn: 'Tue, Feb 28',
     },
     {
-      name: 'Pancham Icon',
-      address: 'Nilamber Triumph / 3409',
-      location: 'S.G. Highway, Rajpath Club, Ahmedabad, Gujrat',
+      name: 'Yonkers',
+      address: '3836 Feathers Hooves Drive',
+      location: 'Huntington Station, NY 11746',
       status: 'assigned',
+      person1: 'David ',
+      person2: 'Candace ',
+      start: 'Mon, Jun 28',
+      end: 'Fri, Oct 21',
     },
     {
-      name: 'Pancham Icon',
-      address: 'Nilamber Triumph / 3409',
-      location: 'S.G. Highway, Rajpath Club, Ahmedabad, Gujrat',
+      name: 'Buena Park',
+      address: '1375 Masonic Drive',
+      location: 'Bozeman, MT 59715',
       status: 'completed',
+      person1: 'Bradley ',
+      person2: 'Allen ',
+      start: 'Sat, Jan 04',
+      end: 'Wed, Mar 12',
     },
   ];
 
   return (
     <WithContainer
+      onBackPress={() => navigation.goBack()}
       pageTitle="Active Projects"
       headerStyle={{backgroundColor: '#fff'}}
       actions={[
@@ -65,6 +90,7 @@ const ActiveProject = ({navigation}) => {
         },
         {
           icon: 'bell-badge-outline',
+          onPress: () => navigation.navigate('notification'),
         },
       ]}>
       <View styles={styles.container}>

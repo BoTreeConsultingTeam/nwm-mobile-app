@@ -17,7 +17,10 @@ import {tabBarIconMapper, tabBarVisibilityMapper} from '../utility/mapper';
 import ProjectRequest from '../screens/request';
 import UploadPhoto from '../screens/uploadPhoto';
 import Note from '../screens/notes';
-
+import MarkUnavailability from '../screens/markUnavailability';
+import Notification from '../screens/notification';
+import CameraPage from '../screens/camera';
+import MediaPage from '../screens/mediaPage';
 const Tab = createBottomTabNavigator();
 
 const WelcomeNav = createStackNavigator();
@@ -51,30 +54,49 @@ const AuthStack = () => (
   </AuthNav.Navigator>
 );
 
-const HomeStack = () => (
-  <HomeNav.Navigator
-    initialRouteName="home"
-    screenOptions={{
-      headerShown: false,
-    }}
-    defaultScreenOptions={{headerShown: false}}>
-    <HomeNav.Screen name="home" component={Home} />
-    <HomeNav.Screen name="projectDetails" component={ProjectDetails} />
-    <HomeNav.Screen name="uploadPhoto" component={UploadPhoto} />
-    <HomeNav.Screen name="note" component={Note} />
-  </HomeNav.Navigator>
-);
+const getCommon = Stack => {
+  return [<Stack.Screen name="notification" component={Notification} />];
+};
 
-const RequestStack = () => (
-  <RequestNav.Navigator
-    initialRouteName="request"
-    screenOptions={{
-      headerShown: false,
-    }}
-    defaultScreenOptions={{headerShown: false}}>
-    <RequestNav.Screen name="request" component={ProjectRequest} />
-  </RequestNav.Navigator>
-);
+const HomeStack = () => {
+  const common = getCommon(HomeNav);
+  return (
+    <HomeNav.Navigator
+      initialRouteName="home"
+      screenOptions={{
+        headerShown: false,
+      }}
+      defaultScreenOptions={{headerShown: false}}>
+      <HomeNav.Screen name="home" component={Home} />
+      <HomeNav.Screen name="activeProject" component={ActiveProject} />
+      <HomeNav.Screen name="projectDetails" component={ProjectDetails} />
+      <HomeNav.Screen name="uploadPhoto" component={UploadPhoto} />
+      <HomeNav.Screen name="note" component={Note} />
+      <HomeNav.Screen name="camera" component={CameraPage} />
+      <HomeNav.Screen
+        name="markUnavailability"
+        component={MarkUnavailability}
+      />
+      <HomeNav.Screen name="mediaPage" component={MediaPage} />
+      {common}
+    </HomeNav.Navigator>
+  );
+};
+
+const RequestStack = () => {
+  const common = getCommon(RequestNav);
+  return (
+    <RequestNav.Navigator
+      initialRouteName="request"
+      screenOptions={{
+        headerShown: false,
+      }}
+      defaultScreenOptions={{headerShown: false}}>
+      <RequestNav.Screen name="request" component={ProjectRequest} />
+      {common}
+    </RequestNav.Navigator>
+  );
+};
 
 const RecentStack = () => (
   <RecentNav.Navigator

@@ -22,6 +22,7 @@ const DateTimePicker = ({
   maximumDate,
   placeholder,
   rippleStyle,
+  iconStyle,
 }) => {
   const [show, setShow] = useState(false);
   const togglePicker = () => setShow(!show);
@@ -40,18 +41,19 @@ const DateTimePicker = ({
         disabled={disabled}
         rippleContainerBorderRadius={0}>
         <Input
+          dense={true}
           disabled={disabled}
           viewStyle={viewStyle}
           inputStyle={inputStyle}
           itemStyle={itemStyle}
-          placeholder={placeholder}
+          placeHolder={placeholder}
           isPassword={false}
           error={error}
           showError={showError}
           value={inputValue}
           isRequired={isRequired}
         />
-        <DateIcon style={styles.dateIcon} />
+        <DateIcon style={[styles.dateIcon, iconStyle]} />
       </Ripple>
       {show ? (
         <DateTimePickerModal

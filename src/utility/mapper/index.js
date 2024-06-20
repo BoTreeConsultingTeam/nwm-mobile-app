@@ -35,4 +35,9 @@ export const tabBarVisibilityMapper = {
   'photo-editor': 'none',
   note: 'none',
   uploadPhoto: 'none',
+  markUnavailability: 'none',
+  notification: 'none',
+  activeProject: 'none',
+  camera: 'none',
+  mediaPage: 'none',
 };

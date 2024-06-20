@@ -1,6 +1,6 @@
 import React from 'react';
 import {WithContainer} from '../components';
-import {FlatList, StyleSheet, View} from 'react-native';
+import {FlatList, PermissionsAndroid, StyleSheet, View} from 'react-native';
 import UtilityCard from '../components/home/utilityCard';
 import Camera from '../assets/icons/camera.svg';
 import Calender from '../assets/icons/calendar.svg';
@@ -88,13 +88,18 @@ const Home = ({navigation}) => {
     },
   ];
 
-  const handleCardClick = item => {
+  const handleCardClick = async item => {
+    await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA);
     switch (item.text) {
       case 'Active Projects':
-        navigation.navigate('projectDetails');
+        navigation.navigate('activeProject');
         break;
       case 'Recents':
-        navigation.navigate('recent');
+        navigation.navigate('recentStack', {screen: 'recent'});
+        break;
+      case 'Mark Unavailability':
+        navigation.navigate('markUnavailability');
+        break;
     }
   };
 
@@ -110,7 +115,9 @@ const Home = ({navigation}) => {
       actions={[
         {
           icon: 'bell-badge-outline',
-          style: {marginTop: 15},
+          size: 28,
+          style: {marginTop: 20},
+          onPress: () => navigation.navigate('notification'),
         },
       ]}
       loading={false}>

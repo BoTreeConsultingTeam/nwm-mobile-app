@@ -1,5 +1,11 @@
 import React from 'react';
-import {View, SafeAreaView, StyleSheet, ScrollView} from 'react-native';
+import {
+  View,
+  SafeAreaView,
+  StyleSheet,
+  ScrollView,
+  StatusBar,
+} from 'react-native';
 import {Appbar, Searchbar} from 'react-native-paper';
 import {FullScreenLoader, NoInternetAlert} from '../index';
 import {colors, spacing} from '../../styles';
@@ -58,6 +64,7 @@ const WithContainer = ({
 
   return (
     <View style={styles.container}>
+      <StatusBar backgroundColor={colors.white} barStyle="dark-content" />
       {Header}
       {loading && <FullScreenLoader />}
       {scrollView ? (

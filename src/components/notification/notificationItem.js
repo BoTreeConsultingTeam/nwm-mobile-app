@@ -1,11 +1,12 @@
 import React from 'react';
-import {Dimensions, Image, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, View} from 'react-native';
 import {Card} from 'react-native-paper';
-import CircleCheckGreen from '../../assets/icons/circle-check-green.svg';
-import DateIcon from '../../assets/icons/date.svg';
+import DemoImage from '../../assets/icons/demo2.png';
 import {colors, fontFaces, fontSizes} from '../../styles';
 import Ripple from '../common/ripple';
-const RecentItem = ({navigation, item}) => {
+import DateIcon from '../../assets/icons/date.svg';
+
+const NotificationItem = ({item, navigation}) => {
   return (
     <Card
       style={styles.card}
@@ -16,22 +17,25 @@ const RecentItem = ({navigation, item}) => {
       }}>
       <Ripple
         style={styles.main}
-        onPress={() => navigation.navigate('photo-editor')}>
+        // onPress={() => navigation.navigate('photo-editor')}
+      >
         <View style={styles.imageView}>
           <Image source={item.image} style={styles.image} />
         </View>
         <View style={styles.detailsView}>
           <View style={styles.title}>
             <Text style={styles.titleText}>{item.name}</Text>
-            <CircleCheckGreen />
+            <Text style={styles.time}>{item.time}</Text>
           </View>
-          <View style={styles.date}>
-            <DateIcon />
-            <Text style={styles.dateText}>{item.date}</Text>
+          <View style={styles.descriptionView}>
+            <Text style={styles.descriptionText}>{item.text}</Text>
+            {item.date && (
+              <View style={styles.date}>
+                <DateIcon />
+                <Text style={styles.dateText}>{item.date}</Text>
+              </View>
+            )}
           </View>
-          <Text style={styles.descriptionText} numberOfLines={2}>
-            {item.note}
-          </Text>
         </View>
       </Ripple>
     </Card>
@@ -45,7 +49,7 @@ const styles = StyleSheet.create({
   card: {
     marginRight: 10,
     marginBottom: 10,
-    height: 110,
+    height: 70,
     marginLeft: 10,
     marginTop: 10,
     backgroundColor: '#fff',
@@ -58,21 +62,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingRight: 10,
-    paddingBottom: 10,
-    paddingTop: 5,
+    paddingVertical: 10,
   },
   date: {
     flexDirection: 'row',
-    paddingBottom: 5,
+    paddingBottom: 10,
   },
   dateText: {
     paddingLeft: 5,
+    paddingRight: 10,
   },
   imageView: {
-    flex: 1.5,
+    flex: 1,
   },
   image: {
-    flex: 1.5,
+    flex: 1,
     width: '100%',
     height: '100%',
     resizeMode: 'fit',
@@ -91,5 +95,13 @@ const styles = StyleSheet.create({
   descriptionText: {
     fontSize: fontSizes.size14,
   },
+  time: {
+    fontSize: fontSizes.size12,
+    ...fontFaces.regular.normal,
+  },
+  descriptionView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
 });
-export default RecentItem;
+export default NotificationItem;

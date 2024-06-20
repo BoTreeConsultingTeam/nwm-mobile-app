@@ -5,7 +5,17 @@ import {colors, fontFaces, fontSizes} from '../../styles';
 import DateIcon from '../../assets/icons/date.svg';
 import LocationPinIcon from '../../assets/icons/location-pin.svg';
 
-const ProjectCard = ({name, address, location, status, navigation}) => {
+const ProjectCard = ({
+  name,
+  address,
+  location,
+  status,
+  navigation,
+  start,
+  end,
+  person1,
+  person2,
+}) => {
   const renderStatus = status => {
     switch (status) {
       case 'assigned':
@@ -70,11 +80,11 @@ const ProjectCard = ({name, address, location, status, navigation}) => {
                 <DateIcon style={styles.dateIcon} />
                 <View style={styles.dateContainer}>
                   <Text style={styles.dateTextField}>Start: </Text>
-                  <Text style={styles.dateText}>Fri, Dec 29</Text>
+                  <Text style={styles.dateText}>{start}</Text>
                 </View>
               </View>
               <View style={styles.contact}>
-                <Text style={styles.contactTextField}>Abhishek:</Text>
+                <Text style={styles.contactTextField}>{person1}:</Text>
                 <Text style={styles.contactText}> 987-654-3210</Text>
               </View>
             </View>
@@ -83,11 +93,11 @@ const ProjectCard = ({name, address, location, status, navigation}) => {
                 <DateIcon style={styles.dateIcon} />
                 <View style={styles.dateContainer}>
                   <Text style={styles.dateTextField}>End:</Text>
-                  <Text style={styles.dateText}> Fri, Dec 29</Text>
+                  <Text style={styles.dateText}> {end}</Text>
                 </View>
               </View>
               <View style={styles.contact}>
-                <Text style={styles.contactTextField}>Abhishek:</Text>
+                <Text style={styles.contactTextField}>{person2}:</Text>
                 <Text style={styles.contactText}> 987-654-3210</Text>
               </View>
             </View>

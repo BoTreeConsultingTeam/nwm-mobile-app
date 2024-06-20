@@ -1,7 +1,7 @@
 import React from 'react';
 import {Ripple, WithContainer} from '../components';
 import {StyleSheet, Text, View} from 'react-native';
-import {Card, Divider, Icon} from 'react-native-paper';
+import {Card, Icon} from 'react-native-paper';
 import CalenderIcon from '../assets/icons/calendar-new.svg';
 import SettingIcon from '../assets/icons/setting.svg';
 import LogoutIcon from '../assets/icons/logout.svg';
@@ -26,7 +26,7 @@ const Profile = () => {
               </View>
               <Icon size={24} source={'chevron-right'} />
             </Ripple>
-            <Divider />
+            {/* <Divider /> */}
             <Ripple style={[styles.options, styles.settingOption]}>
               <View style={styles.optionTitle}>
                 <SettingIcon />
@@ -34,7 +34,7 @@ const Profile = () => {
               </View>
               <Icon size={24} source={'chevron-right'} />
             </Ripple>
-            <Divider />
+            {/* <Divider /> */}
             <Ripple style={styles.logoutOptions}>
               <LogoutIcon />
               <Text style={styles.text}>Logout</Text>
