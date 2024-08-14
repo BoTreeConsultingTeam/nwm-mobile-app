@@ -1,17 +1,22 @@
-import React, {useState} from 'react';
-import {Dimensions, StyleSheet, Text, View} from 'react-native';
-import {Icon, Modal, Portal, RadioButton} from 'react-native-paper';
+import React, { useState } from 'react';
+import { Dimensions, StyleSheet, Text, View } from 'react-native';
+import { Icon, Modal, Portal, RadioButton } from 'react-native-paper';
 import CloseIcon from '../../assets/icons/close.svg';
-import {Ripple, DateTimePicker, Button} from '../index';
-import {colors, fontSizes, fontFaces} from '../../styles';
-const ProjectFilter = ({modalOpen, closeModal}) => {
-  const [value, setValue] = useState('first');
-  const [date, setDate] = useState('');
+import { Ripple, DateTimePicker, Button } from '../index';
+import { colors, fontSizes, fontFaces } from '../../styles';
+const ProjectFilter = ({
+  modalOpen,
+  closeModal,
+  filterValueChange,
+  filterValue,
+  handleFilterApply,
+  clearFilter,
+}) => {
   return (
     <Portal>
       <Modal
         theme={{
-          colors: {backdrop: 'rgba(255, 255, 255, 0.7)'},
+          colors: { backdrop: 'rgba(255, 255, 255, 0.7)' },
         }}
         visible={modalOpen}
         onDismiss={closeModal}
@@ -25,26 +30,18 @@ const ProjectFilter = ({modalOpen, closeModal}) => {
             </Ripple>
           </View>
           <RadioButton.Group
-            onValueChange={newValue => setValue(newValue)}
-            value={value}>
+            onValueChange={newValue => filterValueChange(newValue, 'sortBy')}
+            value={filterValue.sortBy}>
             <View style={styles.radiobutton}>
-              <RadioButton value="first" color={colors.primary} />
+              <RadioButton value="name" color={colors.primary} />
               <Text style={styles.text}>Project Name</Text>
             </View>
             <View style={styles.radiobutton}>
-              <RadioButton value="second" color={colors.primary} />
-              <Text style={styles.text}>Due Date</Text>
-            </View>
-            <View style={styles.radiobutton}>
-              <RadioButton value="third" color={colors.primary} />
+              <RadioButton value="cityName" color={colors.primary} />
               <Text style={styles.text}>City</Text>
             </View>
             <View style={styles.radiobutton}>
-              <RadioButton value="fourth" color={colors.primary} />
-              <Text style={styles.text}>Zip Code</Text>
-            </View>
-            <View style={styles.radiobutton}>
-              <RadioButton value="=fifth" color={colors.primary} />
+              <RadioButton value="subDivision" color={colors.primary} />
               <Text style={styles.text}>Sub Division</Text>
             </View>
           </RadioButton.Group>
@@ -52,37 +49,41 @@ const ProjectFilter = ({modalOpen, closeModal}) => {
             <Text style={styles.title}>Filter By</Text>
             <View style={styles.filterType}>
               <Text style={styles.text}>Type</Text>
-              <RadioButton.Group>
+              <RadioButton.Group
+                onValueChange={newValue =>
+                  filterValueChange(newValue, 'ProjectType')
+                }
+                value={filterValue.ProjectType}>
                 <View style={styles.filterRadioContainer}>
                   <View style={styles.filterRadio}>
-                    <RadioButton value="=fifth" color={colors.primary} />
+                    <RadioButton value="Commercial" color={colors.primary} />
                     <Text style={styles.text}>Commercial</Text>
                   </View>
                   <View style={styles.filterRadio}>
-                    <RadioButton value="=fifth" color={colors.primary} />
+                    <RadioButton value="Residential" color={colors.primary} />
                     <Text style={styles.text}>Residential</Text>
                   </View>
                 </View>
               </RadioButton.Group>
             </View>
-            <DateTimePicker
+            {/* <DateTimePicker
               placeholder={'Select Due Date'}
               mode={'date'}
               onChange={e => setDate(e)}
               value={date}
               inputStyle={styles.dateInput}
-            />
+            /> */}
           </View>
           <View style={styles.buttonGroup}>
             <View />
             <View style={styles.buttonContainer}>
               <Button
-                onPress={closeModal}
+                onPress={handleFilterApply}
                 text={'Save'}
                 style={styles.button}
               />
               <Button
-                onPress={closeModal}
+                onPress={clearFilter}
                 text={'Clear'}
                 textStyle={styles.clearText}
                 style={styles.button}

@@ -1,9 +1,9 @@
 import React from 'react';
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import CheckCircleIcon from '../../assets/icons/checkCircle.svg';
-import {colors, fontFaces, fontSizes} from '../../styles';
+import { colors, fontFaces, fontSizes } from '../../styles';
 
-const Instructions = ({title, instructionList}) => {
+const Instructions = ({ title, instructionList }) => {
   const renderItem = item => {
     return (
       <View style={styles.instructionItem}>
@@ -16,11 +16,12 @@ const Instructions = ({title, instructionList}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
-      <FlatList
+      <Text style={styles.instructionText}>{instructionList}</Text>
+      {/* <FlatList
         contentContainerStyle={styles.listStyle}
         data={instructionList}
         renderItem={({item}) => renderItem(item)}
-      />
+      /> */}
     </View>
   );
 };

@@ -1,10 +1,10 @@
-import React, {useEffect} from 'react';
-import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {createStackNavigator} from '@react-navigation/stack';
-import {useSelector} from 'react-redux';
-import {Text, StyleSheet, Platform} from 'react-native';
-import {colors, fontFaces, fontSizes} from '../styles/index';
+import React, { useEffect } from 'react';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
+import { useSelector } from 'react-redux';
+import { Text, StyleSheet, Platform } from 'react-native';
+import { colors, fontFaces, fontSizes } from '../styles/index';
 import Welcome from '../screens/welcome';
 import Login from '../screens/login';
 import Home from '../screens/home';
@@ -13,14 +13,15 @@ import ProjectDetails from '../screens/projectDetails';
 import Profile from '../screens/profile';
 import Recent from '../screens/recent';
 import PhotoEditor from '../screens/photoEditor';
-import {tabBarIconMapper, tabBarVisibilityMapper} from '../utility/mapper';
+import { tabBarIconMapper, tabBarVisibilityMapper } from '../utility/mapper';
 import ProjectRequest from '../screens/request';
 import UploadPhoto from '../screens/uploadPhoto';
 import Note from '../screens/notes';
 import MarkUnavailability from '../screens/markUnavailability';
 import Notification from '../screens/notification';
-import CameraPage from '../screens/camera';
 import MediaPage from '../screens/mediaPage';
+import ForgotPassword from '../screens/forgotPassword';
+import DocumentList from '../screens/documentList';
 const Tab = createBottomTabNavigator();
 
 const WelcomeNav = createStackNavigator();
@@ -36,7 +37,7 @@ const WelcomeStack = () => (
     screenOptions={{
       headerShown: false,
     }}
-    defaultScreenOptions={{headerShown: false}}>
+    defaultScreenOptions={{ headerShown: false }}>
     <WelcomeNav.Screen name="welcome" component={Welcome} />
   </WelcomeNav.Navigator>
 );
@@ -47,9 +48,10 @@ const AuthStack = () => (
     screenOptions={{
       headerShown: false,
     }}
-    defaultScreenOptions={{headerShown: false}}>
+    defaultScreenOptions={{ headerShown: false }}>
     <AuthNav.Screen name="login" component={Login} />
     <AuthNav.Screen name="home" component={Home} />
+    <AuthNav.Screen name="forgotPassword" component={ForgotPassword} />
     {/* <AuthNav.Screen name="forgotPassword" component={ForgotPassword} /> */}
   </AuthNav.Navigator>
 );
@@ -66,18 +68,18 @@ const HomeStack = () => {
       screenOptions={{
         headerShown: false,
       }}
-      defaultScreenOptions={{headerShown: false}}>
+      defaultScreenOptions={{ headerShown: false }}>
       <HomeNav.Screen name="home" component={Home} />
       <HomeNav.Screen name="activeProject" component={ActiveProject} />
       <HomeNav.Screen name="projectDetails" component={ProjectDetails} />
       <HomeNav.Screen name="uploadPhoto" component={UploadPhoto} />
       <HomeNav.Screen name="note" component={Note} />
-      <HomeNav.Screen name="camera" component={CameraPage} />
       <HomeNav.Screen
         name="markUnavailability"
         component={MarkUnavailability}
       />
       <HomeNav.Screen name="mediaPage" component={MediaPage} />
+      <HomeNav.Screen name="document" component={DocumentList} />
       {common}
     </HomeNav.Navigator>
   );
@@ -91,7 +93,7 @@ const RequestStack = () => {
       screenOptions={{
         headerShown: false,
       }}
-      defaultScreenOptions={{headerShown: false}}>
+      defaultScreenOptions={{ headerShown: false }}>
       <RequestNav.Screen name="request" component={ProjectRequest} />
       {common}
     </RequestNav.Navigator>
@@ -104,7 +106,7 @@ const RecentStack = () => (
     screenOptions={{
       headerShown: false,
     }}
-    defaultScreenOptions={{headerShown: false}}>
+    defaultScreenOptions={{ headerShown: false }}>
     <RecentNav.Screen name="recent" component={Recent} />
     <RecentNav.Screen name="photo-editor" component={PhotoEditor} />
   </RecentNav.Navigator>
@@ -116,7 +118,7 @@ const ProfileStack = () => (
     screenOptions={{
       headerShown: false,
     }}
-    defaultScreenOptions={{headerShown: false}}>
+    defaultScreenOptions={{ headerShown: false }}>
     <ProfileNav.Screen name="me" component={Profile} />
   </ProfileNav.Navigator>
 );
@@ -139,8 +141,8 @@ const TabNavigator = () => {
 
   return (
     <Tab.Navigator
-      screenOptions={({route}) => ({
-        tabBarIcon: ({focused}) => {
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused }) => {
           const Icon =
             tabBarIconMapper[route.name][focused ? 'active' : 'inactive'];
           return (
@@ -152,7 +154,7 @@ const TabNavigator = () => {
             />
           );
         },
-        tabBarLabel: ({focused}) => (
+        tabBarLabel: ({ focused }) => (
           <Text
             style={[
               styles.navText,
@@ -168,7 +170,7 @@ const TabNavigator = () => {
           {
             display:
               tabBarVisibilityMapper[
-                getFocusedRouteNameFromRoute(route) || route?.name
+              getFocusedRouteNameFromRoute(route) || route?.name
               ] || 'flex',
           },
         ],
@@ -214,8 +216,8 @@ const styles = StyleSheet.create({
     borderTopColor: '#0000004d',
     backgroundColor: '#ffffff',
   },
-  tabBarItemAndroid: {height: 70},
-  navIcon: {marginBottom: 0},
+  tabBarItemAndroid: { height: 70 },
+  navIcon: { marginBottom: 0 },
 });
 
 export default Navigator;

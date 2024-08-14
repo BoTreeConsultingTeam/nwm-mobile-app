@@ -15,6 +15,8 @@ const colors = {
   card2: '#FFFBF2',
   card3: '#D8FFD5',
   backgroundPrimary: '#E6F3FF',
+  backgroundButtonDisabled: '#D3D3D3',
+  borderMediumGray: '#A3A0A0',
 };
 
 export default colors;

@@ -1,30 +1,21 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import {Card, Icon, Chip} from 'react-native-paper';
-import {colors, fontFaces, fontSizes} from '../../styles';
+import { StyleSheet, Text, View } from 'react-native';
+import { Card, Icon, Chip } from 'react-native-paper';
+import { colors, fontFaces, fontSizes } from '../../styles';
 import DateIcon from '../../assets/icons/date.svg';
 import LocationPinIcon from '../../assets/icons/location-pin.svg';
+import moment from 'moment-timezone';
 
-const ProjectCard = ({
-  name,
-  address,
-  location,
-  status,
-  navigation,
-  start,
-  end,
-  person1,
-  person2,
-}) => {
+const ProjectCard = ({ navigation, item }) => {
   const renderStatus = status => {
     switch (status) {
-      case 'assigned':
+      case 'Assigned':
         return (
           <Chip style={styles.chipAssigned} selectedColor={colors.white}>
             Assigned
           </Chip>
         );
-      case 're-work':
+      case 'Rework':
         return (
           <Chip style={styles.chipRework} selectedColor={colors.white}>
             Re-Work
@@ -40,15 +31,22 @@ const ProjectCard = ({
   };
 
   const statusBackgroundMapper = {
-    assigned: colors.card1,
-    're-work': colors.card2,
+    Assigned: colors.card1,
+    Rework: colors.card2,
     completed: colors.white,
   };
 
   return (
     <Card
-      onPress={() => navigation.navigate('projectDetails')}
-      style={[styles.main, {backgroundColor: statusBackgroundMapper[status]}]}>
+      onPress={() =>
+        navigation.navigate('projectDetails', {
+          projectId: item.id,
+        })
+      }
+      style={[
+        styles.main,
+        { backgroundColor: statusBackgroundMapper[item.status] },
+      ]}>
       <Card.Content>
         <View style={styles.container}>
           <View style={styles.projectName}>
@@ -57,13 +55,12 @@ const ProjectCard = ({
               <Text
                 style={[
                   styles.projectText,
-                  {fontWeight: '700', fontSize: fontSizes.size16},
+                  { fontWeight: '700', fontSize: fontSizes.size16 },
                 ]}>
-                {name}
+                {item.name}
               </Text>
-              <Text style={styles.projectText}>{address}</Text>
             </View>
-            {renderStatus(status)}
+            {renderStatus(item.status)}
           </View>
           <View style={styles.location}>
             <LocationPinIcon style={styles.locationIcon} />
@@ -71,7 +68,7 @@ const ProjectCard = ({
               ellipsizeMode="tail"
               numberOfLines={1}
               style={styles.locationText}>
-              {location}
+              {item.projectAddress}
             </Text>
           </View>
           <View style={styles.dates}>
@@ -79,13 +76,19 @@ const ProjectCard = ({
               <View style={styles.date}>
                 <DateIcon style={styles.dateIcon} />
                 <View style={styles.dateContainer}>
-                  <Text style={styles.dateTextField}>Start: </Text>
-                  <Text style={styles.dateText}>{start}</Text>
+                  <Text style={styles.dateTextField}>Start:</Text>
+                  <Text style={styles.dateText}>
+                    {moment(item.startDate).format('DD/MM/YYYY')}
+                  </Text>
                 </View>
               </View>
               <View style={styles.contact}>
-                <Text style={styles.contactTextField}>{person1}:</Text>
-                <Text style={styles.contactText}> 987-654-3210</Text>
+                <Text style={styles.contactTextField}>
+                  {item.lenderIndividual}:
+                </Text>
+                <Text ellipsizeMode="tail" style={styles.contactText}>
+                  {item.lenderPhoneNo}
+                </Text>
               </View>
             </View>
             <View style={styles.dateContact}>
@@ -93,13 +96,20 @@ const ProjectCard = ({
                 <DateIcon style={styles.dateIcon} />
                 <View style={styles.dateContainer}>
                   <Text style={styles.dateTextField}>End:</Text>
-                  <Text style={styles.dateText}> {end}</Text>
+                  <Text style={styles.dateText}>
+                    {' '}
+                    {item.estimatedCompletionDate
+                      ? moment(item.estimatedCompletionDate).format(
+                        'DD/MM/YYYY',
+                      )
+                      : '-'}
+                  </Text>
                 </View>
               </View>
-              <View style={styles.contact}>
+              {/* <View style={styles.contact}>
                 <Text style={styles.contactTextField}>{person2}:</Text>
                 <Text style={styles.contactText}> 987-654-3210</Text>
-              </View>
+              </View> */}
             </View>
           </View>
         </View>

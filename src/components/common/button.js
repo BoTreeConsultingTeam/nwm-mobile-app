@@ -1,12 +1,13 @@
 import React from 'react';
-import {Text, StyleSheet, Keyboard} from 'react-native';
-import {Ripple} from '../index';
+import { Text, StyleSheet, Keyboard } from 'react-native';
+import { Ripple } from '../index';
 import {
   colors,
   spacing,
   // radius,
   fontSizes,
 } from '../../styles/index';
+import { ActivityIndicator } from 'react-native-paper';
 
 const Button = ({
   style,
@@ -29,14 +30,14 @@ const Button = ({
 
   const rippleStyle = [
     variant === 'outlined' ? styles.buttonOutlined : styles.button,
-    no100PercentWidth ? {} : {width: '100%'},
+    no100PercentWidth ? {} : { width: '100%' },
     style,
     ((disabled && !noDisableStyle) || isLoading) && {
       backgroundColor:
         variant === 'outlined'
           ? colors.backgroundLightGray
           : colors.backgroundButtonDisabled,
-      borderColor: colors.backgroundButtonDisabled,
+      borderColor: colors.borderMediumGray,
     },
   ];
 
@@ -54,9 +55,9 @@ const Button = ({
   const textStyleModified = [
     variant === 'outlined' ? styles.textOutlined : styles.text,
     variant === 'outlined' &&
-      (isLoading || (disabled && !noDisableStyle)) && {
-        color: colors.backgroundButtonDisabled,
-      },
+    (isLoading || (disabled && !noDisableStyle)) && {
+      color: colors.backgroundButtonDisabled,
+    },
     textStyle,
   ];
 
@@ -67,14 +68,15 @@ const Button = ({
       rippleContainerBorderRadius={rippleContainerBorderRadius || 48}
       onPress={!isLoading ? onButtonPress : null}>
       {isLoading ? (
-        <></>
+        <ActivityIndicator animating color={colors.primary} />
       ) : (
-        // <Spinner
-        //   size="small"
-        //   style={spinnerStyleModified}
-        //   color={spinnerColorModified}
-        // />
         <>
+          {/* <Spinner
+         size="small"
+           style={spinnerStyleModified}
+           color={spinnerColorModified}
+         /> */}
+          {/* <> */}
           {!(!text && isLoading) && Icon ? <Icon /> : null}
           {text ? (
             <Text numberOfLines={1} style={textStyleModified}>

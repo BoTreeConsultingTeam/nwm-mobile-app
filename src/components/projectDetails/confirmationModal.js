@@ -1,10 +1,14 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import {Modal, Portal} from 'react-native-paper';
+import { StyleSheet, Text, View } from 'react-native';
+import { Modal, Portal } from 'react-native-paper';
 import Ripple from '../common/ripple';
-import {colors, fontSizes, fontFaces} from '../../styles';
+import { colors, fontSizes, fontFaces } from '../../styles';
 
-const ProjectConfirmationModal = ({modalOpen, closeModal}) => {
+const ProjectConfirmationModal = ({
+  modalOpen,
+  closeModal,
+  handleProjectSubmit,
+}) => {
   return (
     <Portal>
       <Modal
@@ -21,7 +25,9 @@ const ProjectConfirmationModal = ({modalOpen, closeModal}) => {
               <Ripple rippleContainerBorderRadius={5} onPress={closeModal}>
                 <Text style={styles.buttonText}>NO</Text>
               </Ripple>
-              <Ripple rippleContainerBorderRadius={5} onPress={closeModal}>
+              <Ripple
+                rippleContainerBorderRadius={5}
+                onPress={handleProjectSubmit}>
                 <Text style={styles.buttonText}>YES</Text>
               </Ripple>
             </View>

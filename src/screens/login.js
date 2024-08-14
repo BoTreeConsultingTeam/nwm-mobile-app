@@ -1,12 +1,16 @@
-import {Formik} from 'formik';
+import { Formik } from 'formik';
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import {SvgXml} from 'react-native-svg';
-import {Input, Button} from '../components';
-import {colors, fontSizes, radius, spacing} from '../styles';
-import AppIcon from '../assets/icons/AppIcon.svg';
-import {useDispatch} from 'react-redux';
-import {setToken} from '../reducers/login';
+import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
+import { SvgXml } from 'react-native-svg';
+import { Input, Button, Ripple } from '../components';
+import { colors, fontSizes, radius, spacing } from '../styles';
+import AppIcon from '../assets/icons/bootSplash.png';
+import { useDispatch } from 'react-redux';
+import { setToken } from '../reducers/login';
+import { useLogin } from '../hooks/useLogin';
+import { loginSchema } from '../schema/login';
+import Config from 'react-native-config';
+const { APP_ENV, BASE_URL } = Config;
 
 const xml = `
  <svg
@@ -28,21 +32,33 @@ const xml = `
         </svg>
 `;
 
-const Login = () => {
+const Login = ({ navigation }) => {
   const dispatch = useDispatch();
   const handleLogin = () => {
     dispatch(setToken('token'));
   };
 
+  const [{ isLoading }, { handleLoginSubmit }] = useLogin();
+
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
-        <AppIcon style={styles.appIcon} />
+        <Image source={AppIcon} style={styles.appIcon} />
       </View>
       <View style={styles.loginForm}>
         <Text style={styles.loginTitle}>Login</Text>
-        <Formik>
-          {() => {
+        <Formik
+          initialValues={{
+            email: '',
+            password: '',
+          }}
+          validationSchema={loginSchema}
+          validateOnBlur
+          validateOnChange
+          onSubmit={values => {
+            handleLoginSubmit(values);
+          }}>
+          {({ handleSubmit, setFieldValue, values, errors, touched }) => {
             return (
               <View style={styles.form}>
                 <Input
@@ -50,21 +66,38 @@ const Login = () => {
                   name="email"
                   placeholder="Email"
                   type="email"
+                  onChange={text => {
+                    setFieldValue('email', text);
+                  }}
+                  value={values?.email}
+                  showError={errors.email && touched.email}
+                  error={errors.email}
                 />
                 <Input
                   floatingLabel="Password"
                   name="password"
                   placeholder="Password"
                   type="password"
+                  onChange={text => setFieldValue('password', text)}
+                  value={values?.password}
+                  showError={errors.password && touched.password}
+                  error={errors.password}
+                  secureTextEntry={true}
                 />
-                <Text style={styles.forgotPassword}>Forgot Password</Text>
+                <Ripple
+                  style={styles.forgotPasswordView}
+                  onPress={() => navigation.navigate('forgotPassword')}>
+                  <Text style={styles.forgotPassword}>Forgot Password</Text>
+                </Ripple>
+
                 <Button
                   text={'Login'}
-                  isLoading={false}
+                  isLoading={isLoading}
                   textStyle={styles.buttonText}
                   rippleContainerBorderRadius={radius.radius8}
                   style={styles.button}
-                  onPress={() => handleLogin()}
+                  onPress={() => handleSubmit()}
+                  disabled={isLoading}
                 />
               </View>
             );
@@ -80,7 +113,7 @@ const Login = () => {
 const styles = StyleSheet.create({
   appIcon: {
     marginBottom: spacing.sm,
-    top: -30,
+    top: -20,
   },
   container: {
     flex: 1,
@@ -133,8 +166,11 @@ const styles = StyleSheet.create({
     color: '#00529B',
     fontSize: fontSizes.size16,
     fontWeight: 'bold',
-    marginTop: spacing.md,
     marginRight: spacing.md,
+  },
+  forgotPasswordView: {
+    alignSelf: 'flex-end',
+    marginTop: spacing.md,
   },
   form: {
     margin: spacing.md,

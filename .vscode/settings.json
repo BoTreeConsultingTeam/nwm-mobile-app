@@ -28,7 +28,10 @@
     "editor.maxTokenizationLineLength": 2500,
     "editor.trimAutoWhitespace": true
   },
-  "cSpell.words": ["describedby"],
+  "cSpell.words": [
+    "describedby",
+    "Unavibility"
+  ],
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },

@@ -40,4 +40,5 @@ export const tabBarVisibilityMapper = {
   activeProject: 'none',
   camera: 'none',
   mediaPage: 'none',
+  document: 'none',
 };

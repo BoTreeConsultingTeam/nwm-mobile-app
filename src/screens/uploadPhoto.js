@@ -1,22 +1,41 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
+  Dimensions,
   FlatList,
   Image,
   PermissionsAndroid,
   StyleSheet,
+  Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
-import {colors} from '../styles';
-import {WithContainer} from '../components';
+import { colors } from '../styles';
+import { WithContainer } from '../components';
 import UploadDemo1 from '../assets/icons/upload-demo1.png';
 import UploadDemo3 from '../assets/icons/upload-demo2.png';
 import UploadDemo2 from '../assets/icons/upload-demo3.png';
 import UploadDemo4 from '../assets/icons/upload-demo4.png';
-import {FAB, Portal} from 'react-native-paper';
-import {useCameraPermission} from 'react-native-vision-camera';
-import {useIsFocused} from '@react-navigation/native';
+import {
+  ActivityIndicator,
+  FAB,
+  Icon,
+  Portal,
+  Snackbar,
+} from 'react-native-paper';
+import { useCameraPermission } from 'react-native-vision-camera';
+import { useIsFocused } from '@react-navigation/native';
+import ImagePicker from 'react-native-image-crop-picker';
+import { useUploadPhoto } from '../hooks/useUploadPhoto';
 
-const UploadPhoto = ({navigation}) => {
+const UploadPhoto = ({ navigation, route }) => {
+  const [
+    { isLoading, photoList },
+    { handleAddPhoto, handleGetPhoto, handleDeleteImage },
+  ] = useUploadPhoto({
+    navigation: navigation,
+    route: route,
+  });
+
   const renderItem = (item, index) => {
     let specialStyle = {};
     if ((index + 1) % 2 === 0) {
@@ -26,7 +45,16 @@ const UploadPhoto = ({navigation}) => {
     }
     return (
       <View style={[styles.imageView, specialStyle]}>
-        <Image styles={styles.image} source={item} />
+        <Image
+          source={{ uri: item.path }}
+          resizeMode={'cover'} // cover or contain its upto you view look
+          style={styles.image}
+        />
+        <TouchableOpacity
+          style={styles.closeIcon}
+          onPress={() => handleDeleteImage(item.path)}>
+          <Icon source={'close-circle'} size={20} />
+        </TouchableOpacity>
       </View>
     );
   };
@@ -41,49 +69,75 @@ const UploadPhoto = ({navigation}) => {
     setFabshow(isFocussed);
   }, [isFocussed]);
 
-  const {hasPermission} = useCameraPermission();
-
-  const checkForPermission = async () => {
+  const checkForPermission = async type => {
     let granted = false;
-
-    granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.CAMERA,
-    );
-    if (granted === 'granted') {
-      handleAddPhoto();
+    try {
+      granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES,
+      );
+      if (granted === 'granted') {
+        if (type === 'camera') {
+          handleAddPhoto();
+        } else {
+          handleGetPhoto();
+        }
+      } else {
+        // checkForPermission();
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
 
-  const handleAddPhoto = () => {
-    if (hasPermission) {
-      navigation.navigate('camera');
-    } else {
-      checkForPermission();
-    }
-  };
+  const [open, setOpen] = React.useState(false);
+
+  const onStateChange = ({ open }) => setOpen(open);
 
   return (
     <WithContainer
       actions={[]}
       pageTitle={'Upload Photos'}
-      onBackPress={() => navigation.goBack()}>
+      onBackPress={() => navigation.goBack()}
+      headerStyle={styles.header}>
       <View style={styles.main}>
-        <FlatList
-          contentContainerStyle={styles.listStyle}
-          data={[UploadDemo1, UploadDemo2, UploadDemo3, UploadDemo4]}
-          renderItem={({item, index}) => renderItem(item, index)}
-          numColumns={2}
-        />
+        <Snackbar visible={isLoading}>Image Uploading...</Snackbar>
+        {photoList.length ? (
+          <FlatList
+            contentContainerStyle={styles.listStyle}
+            data={photoList}
+            renderItem={({ item, index }) => renderItem(item, index)}
+            numColumns={2}
+          />
+        ) : (
+          <View style={styles.noContent}>
+            <Text>No images found</Text>
+          </View>
+        )}
         <Portal>
           <FAB.Group
             fabStyle={styles.fabBackground}
             color={colors.white}
-            // style={styles.fabContainer}
-            open={false}
+            containerStyle={styles.fabContainer}
+            open={open}
             visible={fabShow}
-            actions={[]}
-            icon={'plus'}
-            onStateChange={() => handleAddPhoto()}
+            backdropColor={'transparent'}
+            actions={[
+              {
+                icon: 'camera',
+                label: 'Capture',
+                color: colors.primary,
+                onPress: () => checkForPermission('camera'),
+              },
+              {
+                icon: 'image',
+                label: 'Upload',
+                color: colors.primary,
+                onPress: () => checkForPermission('gallery'),
+              },
+            ]}
+            icon={open ? 'close' : 'plus'}
+            onStateChange={onStateChange}
           />
         </Portal>
       </View>
@@ -92,26 +146,45 @@ const UploadPhoto = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  header: {
+    backgroundColor: colors.white,
+  },
   main: {
     flex: 1,
     backgroundColor: colors.white,
     padding: 10,
-    paddingLeft: 20,
+    paddingLeft: 10,
   },
   listStyle: {
     paddingTop: 10,
     paddingRight: 10,
   },
   image: {
-    height: 130,
-    width: 130,
-    resizeMode: 'contain',
+    height: Dimensions.get('window').width / 2 - 20,
+    width: Dimensions.get('window').width / 2 - 20,
   },
   imageView: {
+    position: 'relative',
     marginBottom: 10,
   },
   fabBackground: {
     backgroundColor: colors.primary,
+  },
+  fabContainer: {
+    // backgroundColor: colors.card1,
+  },
+  closeIcon: {
+    padding: 5,
+    color: colors.primary,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+  },
+  noContent: {
+    flex: 1,
+    justifyContent: 'center',
+    alignContent: 'center',
+    alignItems: 'center',
   },
 });
 export default UploadPhoto;

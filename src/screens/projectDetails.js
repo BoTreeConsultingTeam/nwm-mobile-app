@@ -1,40 +1,56 @@
-import React, {useState} from 'react';
-import {Button, Ripple, WithContainer} from '../components';
-import {Dimensions, FlatList, StyleSheet, Text, View} from 'react-native';
-import {Badge, Card, Chip, Icon} from 'react-native-paper';
+import React, { useState } from 'react';
+import { Button, Ripple, WithContainer } from '../components';
+import { Dimensions, FlatList, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Badge, Card, Chip, Icon } from 'react-native-paper';
 import LocationPinIcon from '../assets/icons/location-pin.svg';
-import {colors, fontFaces, fontSizes, radius, spacing} from '../styles';
+import { colors, fontFaces, fontSizes, radius, spacing } from '../styles';
 import DateIcon from '../assets/icons/date.svg';
 import PersonIcon from '../assets/icons/person.svg';
 import NoteIcon from '../assets/icons/note.svg';
 import DocumentIcon from '../assets/icons/document.svg';
-import CameraIcon from '../assets/icons/camera.svg';
 import MapIcon from '../assets/icons/map.svg';
 import Instructions from '../components/projectDetails/instructions';
 import ProjectConfirmationModal from '../components/projectDetails/confirmationModal';
+import { useProjectDetails } from '../hooks/useProjectDetails';
+import moment from 'moment-timezone';
 
-const ProjectDetails = ({navigation}) => {
-  const [visible, setVisible] = useState(false);
+const ProjectDetails = ({ navigation, route }) => {
+  const { projectId } = route?.params;
 
-  const handleModal = () => {
-    setVisible(!visible);
-  };
+  const [
+    { isLoading, projectDetails, visible },
+    { handleProjectSubmit, handleModal },
+  ] = useProjectDetails({
+    projectId: projectId,
+    navigation: navigation,
+  });
 
   const handleCardClick = item => {
     switch (item.name) {
       case 'Photos':
-        navigation.navigate('uploadPhoto');
+        navigation.navigate('uploadPhoto', {
+          projectId: projectId,
+        });
         break;
       case 'Note':
-        navigation.navigate('note');
+        navigation.navigate('note', {
+          projectId: projectId,
+        });
+        break;
+      case 'Documents':
+        navigation.navigate('document', {
+          projectId: projectId,
+        });
+        break;
     }
   };
   const renderStatus = status => {
     switch (status) {
       case 'assigned':
+      case 'Ready':
         return (
           <Chip
-            textStyle={{fontSize: 12, margin: 0}}
+            textStyle={{ fontSize: 12, margin: 0 }}
             style={styles.chipAssigned}
             selectedColor={colors.white}>
             Assigned
@@ -59,21 +75,21 @@ const ProjectDetails = ({navigation}) => {
     {
       name: 'Note',
       icon: <NoteIcon />,
-      count: 3,
+      count: projectDetails.notesCount,
       color: '#FFE4E4',
       badgeColor: colors.warning,
     },
     {
       name: 'Documents',
       icon: <DocumentIcon />,
-      count: 2,
+      count: projectDetails.docsCount,
       color: '#D8FFD5',
       badgeColor: colors.success,
     },
     {
       name: 'Photos',
       icon: <Icon source={'camera-outline'} size={30} color={colors.primary} />,
-      count: 4,
+      count: projectDetails.photoCount,
       color: '#DCE4FF',
       badgeColor: colors.primary,
     },
@@ -120,13 +136,13 @@ const ProjectDetails = ({navigation}) => {
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-            <Text style={{color: colors.textNormal}}>{item.name}</Text>
+            <Text style={{ color: colors.textNormal }}>{item.name}</Text>
           </View>
           {item.count ? (
             <Badge
               style={[
                 styles.countBadge,
-                {backgroundColor: item.color, color: item.badgeColor},
+                { backgroundColor: item.color, color: item.badgeColor },
               ]}>
               {item.count}
             </Badge>
@@ -142,95 +158,114 @@ const ProjectDetails = ({navigation}) => {
       onBackPress={() => navigation.goBack()}
       pageTitle="Project Details"
       actions={[]}
-      scrollView
+      scrollView={isLoading ? false : true}
       scrollViewStyle={styles.scrollView}
       searchBar={false}>
       <View style={styles.container}>
-        <View style={styles.subContainer}>
-          <View style={styles.projectName}>
-            <Icon source="home-outline" size={24} color={colors.secondary} />
-            <View style={styles.projectDetails}>
-              <Text
-                style={[
-                  styles.projectText,
-                  {fontWeight: '500', fontSize: fontSizes.size18},
-                ]}>
-                Pancham Icon
+        {isLoading ? (
+          <View style={styles.noContent}>
+            <ActivityIndicator animating color={colors.primary} />
+          </View>
+        ) : (
+          <View style={styles.container}>
+            <View style={styles.subContainer}>
+              <View style={styles.projectName}>
+                <Icon
+                  source="home-outline"
+                  size={24}
+                  color={colors.secondary}
+                />
+                <View style={styles.projectDetails}>
+                  <Text
+                    style={[
+                      styles.projectText,
+                      { fontWeight: '500', fontSize: fontSizes.size18 },
+                    ]}>
+                    {projectDetails?.name}
+                  </Text>
+                </View>
+                {renderStatus(projectDetails.status)}
+              </View>
+              <View style={styles.location}>
+                <LocationPinIcon style={styles.locationIcon} />
+                <Text style={styles.locationText}>
+                  {projectDetails?.projectAddress}
+                </Text>
+              </View>
+              <View style={styles.dates}>
+                <View style={styles.dateContact}>
+                  <View style={styles.date}>
+                    <DateIcon style={styles.dateIcon} />
+                    <View style={styles.dateContainer}>
+                      <Text style={styles.dateTextField}>Start: </Text>
+                      <Text style={styles.dateText}>
+                        {moment(projectDetails?.startDate).format('DD/MM/YYYY')}
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={styles.date}>
+                    <DateIcon style={styles.dateIcon} />
+                    <View style={styles.dateContainer}>
+                      <Text style={styles.dateTextField}>End:</Text>
+                      <Text style={styles.dateText}>
+                        {' '}
+                        {moment(projectDetails?.endDate).format('DD/MM/YYYY')}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+              </View>
+              <View style={styles.profile}>
+                <PersonIcon style={styles.profileIcon} />
+                <Text style={styles.profileText}>
+                  {projectDetails?.borrowerName}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.detailCard}>
+              <FlatList
+                data={detailsCardList}
+                renderItem={({ item }) => detailsCard(item)}
+                numColumns={2}
+              />
+            </View>
+            <Instructions
+              title={'Inspection Notes'}
+              instructionList={projectDetails.inspectorNotes}
+            />
+            <Instructions
+              title={'Miscellaneous Notes'}
+              instructionList={projectDetails.miscNotes}
+            />
+            <View style={styles.personDetails}>
+              <Text style={styles.personField}>LBC: </Text>
+              <Text style={styles.personValue}>2345677</Text>
+            </View>
+            <View style={styles.personDetails}>
+              <Text style={styles.personField}>POC: </Text>
+              <Text style={styles.personValue}>
+                {projectDetails.lenderIndividual},{' '}
+                {projectDetails.lenderCompany}, {projectDetails.lenderPhoneNo}{' '}
+                {projectDetails.lenderEmail}
               </Text>
-              <Text style={styles.projectText}>Nilamber Triumph / 3409</Text>
             </View>
-            {renderStatus('assigned')}
-          </View>
-          <View style={styles.location}>
-            <LocationPinIcon style={styles.locationIcon} />
-            <Text style={styles.locationText}>
-              S.G. Highway, Rajpath Club, Ahmedabad, Gujrat, 380059
-            </Text>
-          </View>
-          <View style={styles.dates}>
-            <View style={styles.dateContact}>
-              <View style={styles.date}>
-                <DateIcon style={styles.dateIcon} />
-                <View style={styles.dateContainer}>
-                  <Text style={styles.dateTextField}>Start: </Text>
-                  <Text style={styles.dateText}>Fri, Dec 29</Text>
-                </View>
-              </View>
-              <View style={styles.date}>
-                <DateIcon style={styles.dateIcon} />
-                <View style={styles.dateContainer}>
-                  <Text style={styles.dateTextField}>End:</Text>
-                  <Text style={styles.dateText}> Fri, Dec 29</Text>
-                </View>
-              </View>
+            <View style={{ paddingHorizontal: 20 }}>
+              <Button
+                text={'Submit'}
+                isLoading={false}
+                textStyle={styles.buttonText}
+                rippleContainerBorderRadius={radius.radius8}
+                style={styles.button}
+                onPress={() => handleModal()}
+              />
             </View>
+            <ProjectConfirmationModal
+              modalOpen={visible}
+              closeModal={handleModal}
+              handleProjectSubmit={handleProjectSubmit}
+            />
           </View>
-          <View style={styles.profile}>
-            <PersonIcon style={styles.profileIcon} />
-            <Text style={styles.profileText}>Khushboo Talreja</Text>
-          </View>
-        </View>
-        <View style={styles.detailCard}>
-          <FlatList
-            data={detailsCardList}
-            renderItem={({item}) => detailsCard(item)}
-            numColumns={2}
-          />
-        </View>
-        <Instructions
-          title={'Schedule Instructions'}
-          instructionList={instructionList}
-        />
-        <Instructions
-          title={'Inspection Instructions'}
-          instructionList={instructionList}
-        />
-        <View style={styles.personDetails}>
-          <Text style={styles.personField}>LBC: </Text>
-          <Text style={styles.personValue}>2345677</Text>
-        </View>
-        <View style={styles.personDetails}>
-          <Text style={styles.personField}>POC: </Text>
-          <Text style={styles.personValue}>Abhishek Sharma, 987-654-3210</Text>
-        </View>
-        <View style={styles.personDetails}>
-          <Text style={styles.personField}>NWM POC: </Text>
-          <Text style={styles.personValue}>Jaymin Trivedi, 987-654-3210</Text>
-        </View>
-        <View style={{paddingHorizontal: 20}}>
-          <Button
-            text={'Submit'}
-            isLoading={false}
-            textStyle={styles.buttonText}
-            rippleContainerBorderRadius={radius.radius8}
-            style={styles.button}
-            onPress={() => handleModal()}
-          />
-        </View>
-        <ProjectConfirmationModal
-          modalOpen={visible}
-          closeModal={handleModal}
-        />
+        )}
       </View>
     </WithContainer>
   );
@@ -239,6 +274,11 @@ const ProjectDetails = ({navigation}) => {
 const styles = StyleSheet.create({
   header: {
     backgroundColor: '#fff',
+  },
+  noContent: {
+    flex: 1,
+    justifyContent: 'center',
+    alignContent: 'center',
   },
   container: {
     flex: 1,
@@ -369,19 +409,23 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   personDetails: {
-    marginHorizontal: 20,
+    marginHorizontal: spacing.md,
     flexDirection: 'row',
     marginVertical: 5,
+    paddingRight: spacing.sm,
   },
   personField: {
     fontSize: fontSizes.size16,
     ...fontFaces.regular.medium,
     color: colors.textNormal,
+    lineHeight: fontSizes.size24,
   },
   personValue: {
     fontSize: fontSizes.size16,
     ...fontFaces.regular.normal,
     color: colors.textNormal,
+    marginRight: spacing.md,
+    lineHeight: fontSizes.size24,
   },
   buttonText: {
     color: colors.white,

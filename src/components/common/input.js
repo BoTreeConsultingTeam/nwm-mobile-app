@@ -1,5 +1,6 @@
-import {StyleSheet, View} from 'react-native';
-import {TextInput, TextInputLabelProps} from 'react-native-paper';
+import { StyleSheet, View, Text } from 'react-native';
+import { TextInput, TextInputLabelProps } from 'react-native-paper';
+import { colors, fontFaces, fontSizes } from '../../styles';
 
 const Input = ({
   leftIcon,
@@ -16,6 +17,9 @@ const Input = ({
   dense,
   multiline,
   numberOfLines,
+  showError,
+  error,
+  secureTextEntry,
 }) => {
   return (
     <View>
@@ -30,23 +34,33 @@ const Input = ({
         right={rightIcon}
         disabled={disabled}
         onBlur={onBlur}
-        style={[style.containerStyle, inputStyle]}
+        style={[styles.containerStyle, inputStyle]}
         onFocus={onFocus}
-        underlineStyle={style.underlineStyle}
+        underlineStyle={styles.underlineStyle}
         activeUnderlineColor={'#00529B'}
         selectionColor={'#00529B'}
         multiline={multiline}
         numberOfLines={numberOfLines}
+        secureTextEntry={secureTextEntry}
       />
+      {showError ? <Text style={[styles.errorText]}>{error}</Text> : null}
     </View>
   );
 };
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
   underlineStyle: {
     borderColor: '#00529B',
   },
   containerStyle: {
     backgroundColor: '#fff',
+  },
+  errorText: {
+    ...fontFaces.regular.normal,
+    alignSelf: 'flex-start',
+    color: colors.backgroundError,
+    fontSize: fontSizes.size11,
+    lineHeight: 16,
+    marginTop: 8,
   },
 });
 export default Input;

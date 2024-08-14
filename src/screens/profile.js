@@ -1,15 +1,25 @@
 import React from 'react';
-import {Ripple, WithContainer} from '../components';
-import {StyleSheet, Text, View} from 'react-native';
-import {Card, Icon} from 'react-native-paper';
+import { Ripple, WithContainer } from '../components';
+import { StyleSheet, Text, View } from 'react-native';
+import { Card, Icon } from 'react-native-paper';
 import CalenderIcon from '../assets/icons/calendar-new.svg';
 import SettingIcon from '../assets/icons/setting.svg';
 import LogoutIcon from '../assets/icons/logout.svg';
-import {colors, fontFaces} from '../styles';
+import { colors, fontFaces, spacing } from '../styles';
+import { useDispatch } from 'react-redux';
 
-const Profile = () => {
+const Profile = ({ navigation }) => {
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch({ type: 'LOGOUT', payload: {} });
+  };
+
   return (
-    <WithContainer pageTitle={'My Account'} actions={[]}>
+    <WithContainer
+      pageTitle={'My Account'}
+      actions={[]}
+      headerStyle={styles.header}>
       <View style={styles.container}>
         <Card
           mode="elevated"
@@ -19,7 +29,11 @@ const Profile = () => {
             roundness: 3,
           }}>
           <View style={styles.profileOptions}>
-            <Ripple style={styles.options}>
+            <Ripple
+              style={styles.options}
+              onPress={() =>
+                navigation.navigate('homeStack', { screen: 'markUnavailability' })
+              }>
               <View style={styles.optionTitle}>
                 <CalenderIcon />
                 <Text style={styles.text}>Calender</Text>
@@ -35,7 +49,7 @@ const Profile = () => {
               <Icon size={24} source={'chevron-right'} />
             </Ripple>
             {/* <Divider /> */}
-            <Ripple style={styles.logoutOptions}>
+            <Ripple style={styles.logoutOptions} onPress={handleLogout}>
               <LogoutIcon />
               <Text style={styles.text}>Logout</Text>
             </Ripple>
@@ -46,6 +60,10 @@ const Profile = () => {
   );
 };
 const styles = StyleSheet.create({
+  header: {
+    marginBottom: spacing.md,
+    backgroundColor: '#fff',
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',

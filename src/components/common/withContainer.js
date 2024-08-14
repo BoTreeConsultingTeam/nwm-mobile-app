@@ -6,9 +6,9 @@ import {
   ScrollView,
   StatusBar,
 } from 'react-native';
-import {Appbar, Searchbar} from 'react-native-paper';
-import {FullScreenLoader, NoInternetAlert} from '../index';
-import {colors, spacing} from '../../styles';
+import { Appbar, Searchbar } from 'react-native-paper';
+import { FullScreenLoader, NoInternetAlert } from '../index';
+import { colors, spacing } from '../../styles';
 
 const WithContainer = ({
   onBackPress,
@@ -24,11 +24,11 @@ const WithContainer = ({
   headerStyle,
   scrollView,
   scrollViewStyle,
+  onSearchBarClose,
 }) => {
   const Header = (
     <Appbar.Header style={[styles.header, headerStyle]}>
       {onBackPress ? <Appbar.BackAction onPress={onBackPress} /> : null}
-      {pageTitle ? <Appbar.Content title={pageTitle} /> : null}
       {searchBar ? (
         <Searchbar
           value={searchValue}
@@ -37,27 +37,30 @@ const WithContainer = ({
           style={[styles.searchBar]}
           icon={'magnify'}
           mode="bar"
-          onClearIconPress={onSearchValueChange}
+          clearIcon={'close'}
+          onClearIconPress={onSearchBarClose}
           elevation={3}
           inputStyle={searchStyle}
+          loading={false}
           cursorColor={colors.primary}
         />
       ) : null}
+      {pageTitle ? <Appbar.Content title={pageTitle} /> : null}
       {actions.length
         ? actions.map((item, index) => {
-            return (
-              <Appbar.Action
-                key={index}
-                icon={item.icon}
-                iconColor={item.iconColor}
-                onPress={item.onPress}
-                disabled={item.disabled}
-                size={item.size}
-                color={item.color}
-                style={item.style}
-              />
-            );
-          })
+          return (
+            <Appbar.Action
+              key={index}
+              icon={item.icon}
+              iconColor={item.iconColor}
+              onPress={item.onPress}
+              disabled={item.disabled}
+              size={item.size}
+              color={item.color}
+              style={item.style}
+            />
+          );
+        })
         : null}
     </Appbar.Header>
   );
@@ -83,6 +86,7 @@ const WithContainer = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white',
   },
   searchBar: {
     backgroundColor: 'white',

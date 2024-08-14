@@ -4,9 +4,17 @@ import Navigator from './src/setup/navigator';
 import { persistor, store } from './src/setup/store';
 import { NavigationContainer } from '@react-navigation/native';
 import { PaperProvider } from 'react-native-paper';
+import RNBootSplash from 'react-native-bootsplash';
+import { useEffect } from 'react';
 
 export default function App() {
   const navigationDeferred = new Deferred();
+
+  useEffect(() => {
+    setTimeout(() => {
+      RNBootSplash.hide({ fade: true });
+    }, 100);
+  }, []);
 
   return (
     <Provider store={store}>

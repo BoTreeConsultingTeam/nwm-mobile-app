@@ -1,13 +1,13 @@
 import React from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
-import {Card} from 'react-native-paper';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import { Card } from 'react-native-paper';
 import Ripple from '../common/ripple';
-import {colors, fontFaces, fontSizes, radius} from '../../styles';
+import { colors, fontFaces, fontSizes, radius } from '../../styles';
 import Button from '../common/button';
 import LocationPinIcon from '../../assets/icons/location-pin.svg';
 import DemoImage from '../../assets/icons/demo.png';
-
-const RequestItem = ({item, index}) => {
+import moment from 'moment-timezone';
+const RequestItem = ({ item, index, handleProjectRequest }) => {
   return (
     <Card
       style={styles.card}
@@ -18,39 +18,37 @@ const RequestItem = ({item, index}) => {
       }}>
       <View
         style={styles.main}
-        // onPress={() => navigation.navigate('photo-editor')}
+      // onPress={() => navigation.navigate('photo-editor')}
       >
-        <View style={styles.imageView}>
+        {/* <View style={styles.imageView}>
           <Image source={item.image} style={styles.image} />
-        </View>
+        </View> */}
         <View style={styles.detailsView}>
           <View style={styles.title}>
             <Text style={styles.titleText}>{item.name}</Text>
-            <Text>{item.time}</Text>
+            {item.time && <Text>{moment(item.createdOn).fromNow()}</Text>}
           </View>
           <View style={styles.location}>
             <LocationPinIcon style={styles.locationIcon} />
-            <Text>{item.location}</Text>
+            <Text>{item.projectAddress}</Text>
           </View>
           <View style={styles.buttonView}>
-            {[1, 2, 3].includes(index + 1) && (
-              <Button
-                text={[3].includes(index + 1) ? 'Accepted' : 'Accept'}
-                isLoading={false}
-                textStyle={styles.buttonText}
-                rippleContainerBorderRadius={radius.radius4}
-                style={styles.button}
-              />
-            )}
-            {[1, 2, 4].includes(index + 1) && (
-              <Button
-                text={[4].includes(index + 1) ? 'Rejected' : 'Reject'}
-                isLoading={false}
-                textStyle={styles.rejectText}
-                rippleContainerBorderRadius={radius.radius4}
-                style={styles.rejectButton}
-              />
-            )}
+            <Button
+              text={'Accept'}
+              isLoading={false}
+              textStyle={styles.buttonText}
+              rippleContainerBorderRadius={radius.radius4}
+              style={styles.button}
+              onPress={() => handleProjectRequest(item, 'accept')}
+            />
+            <Button
+              text={'Reject'}
+              isLoading={false}
+              textStyle={styles.rejectText}
+              rippleContainerBorderRadius={radius.radius4}
+              style={styles.rejectButton}
+              onPress={() => handleProjectRequest(item, 'reject')}
+            />
           </View>
         </View>
       </View>
@@ -135,6 +133,8 @@ const styles = StyleSheet.create({
   },
   buttonView: {
     flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingRight: 10,
   },
 });
 export default RequestItem;

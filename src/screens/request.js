@@ -1,75 +1,91 @@
 import React from 'react';
-import {FlatList, StyleSheet, View} from 'react-native';
-import {Button, WithContainer} from '../components';
-import {colors, fontSizes, radius, spacing} from '../styles';
+import { FlatList, RefreshControl, StyleSheet, Text, View } from 'react-native';
+import { Button, WithContainer } from '../components';
+import { colors, fontFaces, fontSizes, radius, spacing } from '../styles';
 import RequestItem from '../components/projectRequest/requestItem';
-import RequestDemo1 from '../assets/icons/request-demo1.png';
-import RequestDemo2 from '../assets/icons/request-demo2.png';
-import RequestDemo3 from '../assets/icons/request-demo3.png';
-import RequestDemo4 from '../assets/icons/request-demo4.png';
-
-const ProjectRequest = ({navigation}) => {
-  const demoData = [
+import { useProjectRequest } from '../hooks/useRequest';
+import { ActivityIndicator, MD2Colors } from 'react-native-paper';
+const ProjectRequest = ({ navigation }) => {
+  const [
+    { isLoading, projectList, isPaginationLoading, endReached, refreshing },
     {
-      name: 'Pancham Icon',
-      location: 'Huntington Station, NY 11746',
-      time: '1 day ago',
-      image: RequestDemo1,
+      fetchNextPage,
+      handleRefresh,
+      handleProjectRequest,
+      handleAcceptAllRequest,
     },
-    {
-      name: 'Kasper Bliss',
-      location: 'Bozeman, MT 59715',
-      time: '12 hours ago',
-      image: RequestDemo2,
-    },
-    {
-      name: 'Dream Icon',
-      location: 'San Diego, CA 92103',
-      time: '1 week ago',
-      image: RequestDemo3,
-    },
-    {
-      name: 'Nilamber Triumph',
-      location: 'Sardis, TN 3837',
-      time: '10 min ago',
-      image: RequestDemo4,
-    },
-  ];
+  ] = useProjectRequest();
 
   return (
     <WithContainer
       pageTitle={'New Project Request'}
       actions={[
         {
-          icon: 'magnify',
-        },
-        {
           icon: 'bell-badge-outline',
           onPress: () => navigation.navigate('notification'),
         },
-      ]}>
+      ]}
+      headerStyle={styles.header}>
       <View style={styles.main}>
-        <FlatList
-          data={demoData}
-          contentContainerStyle={{paddingBottom: 20}}
-          renderItem={({item, index}) => (
-            <RequestItem item={item} index={index} />
-          )}
-        />
-        <View style={{paddingHorizontal: 20}}>
-          <Button
-            text={'Accept All'}
-            isLoading={false}
-            textStyle={styles.buttonText}
-            rippleContainerBorderRadius={radius.radius8}
-            style={styles.button}
+        {projectList.length ? (
+          <FlatList
+            data={projectList}
+            contentContainerStyle={{ paddingBottom: 20 }}
+            renderItem={({ item, index }) => (
+              <RequestItem
+                item={item}
+                index={index}
+                handleProjectRequest={handleProjectRequest}
+              />
+            )}
+            bounces
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={handleRefresh}
+                enabled={true}
+                tintColor={colors.backgroundPrimary}
+                progressBackgroundColor={colors.white}
+              />
+            }
+            keyExtractor={(_, index) => index}
+            onEndReachedThreshold={0.01}
+            onEndReached={fetchNextPage}
+            ListFooterComponent={
+              isPaginationLoading && !endReached ? (
+                <ActivityIndicator animating color={colors.backgroundPrimary} />
+              ) : null
+            }
           />
-        </View>
+        ) : isLoading ? (
+          <View style={styles.noContent}>
+            <ActivityIndicator animating color={colors.primary} />
+          </View>
+        ) : (
+          <View style={styles.noContent}>
+            <Text style={styles.text}>No Results Found</Text>
+          </View>
+        )}
+        {!!projectList.length && (
+          <View style={{ paddingHorizontal: 20 }}>
+            <Button
+              text={'Accept All'}
+              onPress={handleAcceptAllRequest}
+              isLoading={false}
+              textStyle={styles.buttonText}
+              rippleContainerBorderRadius={radius.radius8}
+              style={styles.button}
+            />
+          </View>
+        )}
       </View>
     </WithContainer>
   );
 };
 const styles = StyleSheet.create({
+  header: {
+    backgroundColor: '#fff',
+  },
   main: {
     flex: 1,
     backgroundColor: colors.white,
@@ -84,6 +100,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     alignSelf: 'center',
     marginTop: spacing.md,
+  },
+  noContent: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text: {
+    ...fontFaces.regular.bold,
+    fontSize: fontSizes.size18,
+    lineHeight: 23,
+    color: colors.text1,
   },
 });
 export default ProjectRequest;

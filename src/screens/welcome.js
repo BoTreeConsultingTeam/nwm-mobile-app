@@ -3,16 +3,17 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
   Dimensions,
+  Image,
+  ImageBackground,
 } from 'react-native';
-import {SvgXml} from 'react-native-svg';
-import RadialGradient from 'react-native-radial-gradient';
-import {Button} from '../components';
-import {colors, fontFaces, fontSizes, radius, spacing} from '../styles';
-import {setWelcomeScreenDisplay} from '../reducers/welcome';
-import {useDispatch} from 'react-redux';
-import AppIcon from '../assets/icons/AppIcon.svg';
+import { SvgXml } from 'react-native-svg';
+import { Button } from '../components';
+import { colors, fontSizes, radius, spacing } from '../styles';
+import { setWelcomeScreenDisplay } from '../reducers/welcome';
+import { useDispatch } from 'react-redux';
+import AppIcon from '../assets/icons/bootSplash.png';
+import BackgroundImage from '../assets/icons/radial-bg.png';
 
 const xml = `
  <svg
@@ -42,14 +43,12 @@ const Welcome = () => {
   };
   return (
     <View style={styles.container}>
-      <RadialGradient
-        style={styles.linearGradient}
-        colors={['#2E679C', '#00478A']}
-        stops={[0, 0.9]}
-        center={[200, 350]}
-        radius={300}>
+      <ImageBackground
+        source={BackgroundImage}
+        resizeMode="cover"
+        style={styles.image}>
         <View style={styles.logoContainer}>
-          <AppIcon style={styles.appIcon} />
+          <Image source={AppIcon} style={styles.appIcon} />
         </View>
         <View style={styles.contentContainer}>
           <Text style={styles.backgroundNwmText}>NWM</Text>
@@ -67,7 +66,7 @@ const Welcome = () => {
           />
         </View>
         <SvgXml xml={xml} width="100%" />
-      </RadialGradient>
+      </ImageBackground>
     </View>
   );
 };
@@ -86,6 +85,10 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+  },
+  image: {
+    flex: 1,
+    justifyContent: 'center',
   },
   logoContainer: {
     alignItems: 'center',

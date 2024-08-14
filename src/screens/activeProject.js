@@ -1,88 +1,50 @@
-import React, {useState} from 'react';
-import {WithContainer} from '../components';
-import {FlatList, StyleSheet, View} from 'react-native';
+import React, { useState } from 'react';
+import { WithContainer } from '../components';
+import { FlatList, RefreshControl, StyleSheet, Text, View } from 'react-native';
 import ProjectCard from '../components/Project/projectCard';
 import ProjectFilter from '../components/Project/projectFilter';
+import { useActiveProject } from '../hooks/useActiveProject';
+import { ActivityIndicator, IconButton, Searchbar } from 'react-native-paper';
+import { colors, fontFaces, fontSizes, spacing } from '../styles';
 
-const ActiveProject = ({navigation}) => {
-  const [modalOpen, setModalOpen] = useState(false);
-
-  const handleModal = () => {
-    setModalOpen(prev => !prev);
-  };
-  const closeModal = () => setModalOpen(false);
-
-  const projectData = [
+const ActiveProject = ({ navigation }) => {
+  const [
     {
-      name: 'Pancham Icon',
-      address: 'Nilamber Triumph / 3409',
-      location: 'S.G. Highway, Rajpath Club, Ahmedabad, Gujrat',
-      status: 'assigned',
-      person1: 'Joseph ',
-      person2: 'Shawn ',
-      start: 'Mon, Nov 28',
-      end: 'Thu, Jan 28',
+      activeProjectList,
+      currentPage,
+      endReached,
+      refreshing,
+      isPaginationLoading,
+      isLoading,
+      searchValue,
+      isSearchBarVisible,
+      filterValue,
+      modalOpen,
     },
     {
-      name: 'Missoula',
-      address: '182 Lords Way',
-      location: 'Sardis, TN 3837',
-      status: 're-work',
-      person1: 'Allen ',
-      person2: 'David ',
-      start: 'Wed, Jun 28',
-      end: 'Fri, Oct 21',
+      fetchNextPage,
+      handleRefresh,
+      handleSearchBar,
+      handleSearchTextChange,
+      filterValueChange,
+      handleFilterApply,
+      closeModal,
+      handleModal,
+      clearFilter,
     },
-    {
-      name: 'Quincy',
-      address: '3592 Ocello Street',
-      location: 'San Diego, CA 92103',
-      status: 'assigned',
-      person1: 'Bradley ',
-      person2: 'Candace ',
-      start: 'Mon, Mar 06',
-      end: 'Fri, Jul 28',
-    },
-    {
-      name: 'Kasper Bliss',
-      address: '5 Horizon Circle',
-      location: 'Tacoma, WA 98402',
-      status: 'completed',
-      person1: 'Joseph ',
-      person2: 'Shawn',
-      start: 'Thu, Jan 25',
-      edn: 'Tue, Feb 28',
-    },
-    {
-      name: 'Yonkers',
-      address: '3836 Feathers Hooves Drive',
-      location: 'Huntington Station, NY 11746',
-      status: 'assigned',
-      person1: 'David ',
-      person2: 'Candace ',
-      start: 'Mon, Jun 28',
-      end: 'Fri, Oct 21',
-    },
-    {
-      name: 'Buena Park',
-      address: '1375 Masonic Drive',
-      location: 'Bozeman, MT 59715',
-      status: 'completed',
-      person1: 'Bradley ',
-      person2: 'Allen ',
-      start: 'Sat, Jan 04',
-      end: 'Wed, Mar 12',
-    },
-  ];
+  ] = useActiveProject();
 
   return (
     <WithContainer
       onBackPress={() => navigation.goBack()}
       pageTitle="Active Projects"
-      headerStyle={{backgroundColor: '#fff'}}
+      headerStyle={styles.header}
       actions={[
         {
           icon: 'magnify',
+          onPress: () => {
+            handleSearchBar();
+          },
         },
         {
           icon: 'tune',
@@ -94,21 +56,78 @@ const ActiveProject = ({navigation}) => {
         },
       ]}>
       <View styles={styles.container}>
-        <FlatList
-          style={styles.subContainer}
-          data={projectData}
-          renderItem={({item}) => {
-            return <ProjectCard {...item} navigation={navigation} />;
-          }}
-          keyExtractor={(item, index) => index.toString()}
-        />
+        {isSearchBarVisible && (
+          <Searchbar
+            elevation={3}
+            value={searchValue}
+            placeholder="Search"
+            style={styles.searchBar}
+            onChangeText={handleSearchTextChange}
+            right={() => (
+              <IconButton
+                icon={'close'}
+                onPress={() => {
+                  handleSearchBar();
+                  searchValue && handleSearchTextChange('');
+                }}
+              />
+            )}
+          />
+        )}
+        {activeProjectList.length ? (
+          <FlatList
+            style={styles.subContainer}
+            contentContainerStyle={{ paddingBottom: 20 }}
+            data={activeProjectList}
+            renderItem={({ item }) => {
+              return <ProjectCard item={item} navigation={navigation} />;
+            }}
+            bounces
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={handleRefresh}
+                enabled={true}
+                tintColor={colors.backgroundPrimary}
+                progressBackgroundColor={colors.white}
+              />
+            }
+            keyExtractor={(_, index) => index}
+            onEndReachedThreshold={0.01}
+            onEndReached={fetchNextPage}
+            ListFooterComponent={
+              isPaginationLoading && !endReached ? (
+                <ActivityIndicator animating color={colors.backgroundPrimary} />
+              ) : null
+            }
+          />
+        ) : isLoading ? (
+          <View style={styles.noContent}>
+            <ActivityIndicator animating color={colors.primary} />
+          </View>
+        ) : (
+          <View style={styles.noContent}>
+            <Text style={styles.text}>No Results Found</Text>
+          </View>
+        )}
       </View>
-      <ProjectFilter modalOpen={modalOpen} closeModal={closeModal} />
+      <ProjectFilter
+        modalOpen={modalOpen}
+        closeModal={closeModal}
+        filterValue={filterValue}
+        filterValueChange={filterValueChange}
+        handleFilterApply={handleFilterApply}
+        clearFilter={clearFilter}
+      />
     </WithContainer>
   );
 };
 
 const styles = StyleSheet.create({
+  header: {
+    // marginBottom: 20,
+    backgroundColor: '#fff',
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
@@ -118,6 +137,26 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 70,
     backgroundColor: '#fff',
+  },
+  noContent: {
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+  },
+  text: {
+    ...fontFaces.regular.bold,
+    fontSize: fontSizes.size18,
+    lineHeight: 23,
+    color: colors.text1,
+  },
+  searchBar: {
+    backgroundColor: 'white',
+    marginHorizontal: 10,
+    textAlign: 'center',
+    height: 50,
+    borderRadius: spacing.sm,
+    marginBottom: 10,
   },
 });
 export default ActiveProject;

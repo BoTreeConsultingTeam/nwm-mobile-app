@@ -1,10 +1,10 @@
-import React, {useMemo} from 'react';
-import {WithContainer} from '../components';
-import {Image, StyleSheet, View} from 'react-native';
+import React, { useMemo } from 'react';
+import { WithContainer } from '../components';
+import { Image, StyleSheet, View } from 'react-native';
 
-const MediaPage = ({navigation, route}) => {
-  const {path, type} = route.params;
-  const source = useMemo(() => ({uri: `file://${path}`}), [path]);
+const MediaPage = ({ navigation, route }) => {
+  const { path } = route.params;
+  const source = useMemo(() => ({ uri: path }), [path]);
 
   return (
     <WithContainer
@@ -14,8 +14,8 @@ const MediaPage = ({navigation, route}) => {
       <View style={styles.main}>
         <Image
           source={source}
-          style={StyleSheet.absoluteFill}
-          resizeMode="cover"
+          style={StyleSheet.absoluteFillObject}
+          resizeMode="contain"
         />
       </View>
     </WithContainer>
