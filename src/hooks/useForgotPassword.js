@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { forgotPassword } from '../api /login';
+import { forgotPassword } from '../api/login';
 import { useFetchAPIData } from './common';
 import { showToast } from '../utility/methods/other';
 

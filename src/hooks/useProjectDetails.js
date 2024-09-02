@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useFetchAPIData } from './common';
-import { getProjectDetailsByID, submitProject } from '../api /project';
+import { getProjectDetailsByID, submitProject } from '../api/project';
 import { useSelector } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
 
@@ -54,6 +54,7 @@ export const useProjectDetails = ({ projectId, navigation }) => {
     successCb: data => successCb(data, 'get'),
     apiParams: projectDetailsGetBody,
     apiFunction: getProjectDetailsByID,
+    failureCb: e => console.log(e),
   });
 
   useFetchAPIData({

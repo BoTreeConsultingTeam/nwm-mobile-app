@@ -1,13 +1,14 @@
 import React from 'react';
-import {FlatList, StyleSheet, View} from 'react-native';
-import {WithContainer} from '../components';
-import {colors} from '../styles';
+import { FlatList, StyleSheet, View } from 'react-native';
+import { WithContainer } from '../components';
+import { colors } from '../styles';
 import RecentItem from '../components/recent/recentItem';
 import RecentDemo1 from '../assets/icons/recent-demo1.png';
 import RecentDemo2 from '../assets/icons/recent-demo2.png';
 import RecentDemo3 from '../assets/icons/recent-demo3.png';
+import { useRecent } from '../hooks/useRecent';
 
-const Recent = ({navigation}) => {
+const Recent = ({ navigation }) => {
   const demoData = [
     {
       name: 'Pancham Icon',
@@ -29,21 +30,14 @@ const Recent = ({navigation}) => {
     },
   ];
 
+  const [{ recentProjectList }] = useRecent();
+
   return (
-    <WithContainer
-      pageTitle={'Recent'}
-      actions={[
-        {
-          icon: 'pencil-outline',
-        },
-        {
-          icon: 'trash-can-outline',
-        },
-      ]}>
+    <WithContainer pageTitle={'Recent'} actions={[]}>
       <View style={styles.main}>
         <FlatList
-          data={demoData}
-          renderItem={({item}) => (
+          data={recentProjectList}
+          renderItem={({ item }) => (
             <RecentItem item={item} navigation={navigation} />
           )}
         />

@@ -21,4 +21,7 @@ export const endpoints = {
   deletePhoto: '/inspection/delete-images',
   submitProject: '/inspection',
   documentList: '/inspection/documents',
+  recentProject: '/inspection/recents',
+  sendFCMTokenToBackend: '/fcm-notification/save-device-token',
+  getNotificationList: '/notification/notifications',
 };

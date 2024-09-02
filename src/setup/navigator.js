@@ -22,6 +22,9 @@ import Notification from '../screens/notification';
 import MediaPage from '../screens/mediaPage';
 import ForgotPassword from '../screens/forgotPassword';
 import DocumentList from '../screens/documentList';
+import { useNotificationConnection } from '../hooks/useNotification';
+import { useFcmService } from '../utility/notificationService/fcmService';
+
 const Tab = createBottomTabNavigator();
 
 const WelcomeNav = createStackNavigator();
@@ -193,6 +196,15 @@ const Navigator = props => {
     state => state.welcomeScreen.display,
   );
 
+  const { register } = useFcmService();
+
+  useEffect(() => {
+    if (token) {
+      register();
+    }
+  }, [token]);
+
+  // useNotificationConnection();
   return token ? (
     <TabNavigator {...props} />
   ) : displayWelcomeScreen ? (

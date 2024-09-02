@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Modal, Portal } from 'react-native-paper';
 import { colors, fontFaces, fontSizes, spacing } from '../../styles';
@@ -14,10 +14,16 @@ const AddNoteModal = ({
   currentTab,
   editNoteData,
 }) => {
+  const formikRef = useRef(null);
   const getInitialValue = () => {
     return {
       notes: editNoteData?.note || '',
     };
+  };
+
+  const handleClose = () => {
+    closeModal(); // Close the modal
+    formikRef.current?.resetForm();
   };
 
   return (
@@ -25,11 +31,12 @@ const AddNoteModal = ({
       <Modal
         dismissable={false}
         visible={modalOpen}
-        onDismiss={closeModal}
+        onDismiss={handleClose}
         style={styles.modal}
         contentContainerStyle={styles.container}>
         <View style={styles.modalContainer}>
           <Formik
+            innerRef={formikRef}
             initialValues={getInitialValue()}
             validationSchema={noteSchema}
             onSubmit={values => {
@@ -56,7 +63,7 @@ const AddNoteModal = ({
                   />
                 </View>
                 <View style={styles.buttonContainer}>
-                  <Ripple rippleContainerBorderRadius={5} onPress={closeModal}>
+                  <Ripple rippleContainerBorderRadius={5} onPress={handleClose}>
                     <Text style={styles.buttonText}>Cancel</Text>
                   </Ripple>
                   <Ripple

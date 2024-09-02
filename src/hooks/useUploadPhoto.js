@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ImagePicker from 'react-native-image-crop-picker';
 import { useFetchAPIData } from './common';
-import { deletePhoto, getAllPhotos, uploadNewPhoto } from '../api /uploadPhoto';
+import { deletePhoto, getAllPhotos, uploadNewPhoto } from '../api/uploadPhoto';
 import { useSelector } from 'react-redux';
 
 export const useUploadPhoto = ({ navigation, route }) => {
@@ -26,6 +26,7 @@ export const useUploadPhoto = ({ navigation, route }) => {
     ImagePicker.openCamera({
       width: 300,
       height: 400,
+      compressImageQuality: 0.5,
     }).then(image => {
       const formData = new FormData();
 

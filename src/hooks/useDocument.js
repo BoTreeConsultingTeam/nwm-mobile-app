@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useFetchAPIData } from './common';
-import { getDocList } from '../api /project';
+import { getDocList } from '../api/project';
 import RNFS from 'react-native-fs';
 import FileViewer from 'react-native-file-viewer';
 import { Platform } from 'react-native';

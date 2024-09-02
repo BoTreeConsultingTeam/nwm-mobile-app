@@ -40,7 +40,9 @@ const DocumentList = ({ navigation, route }) => {
             )}
           />
         ) : (
-          <Text style={styles.noContent}>No results found</Text>
+          <View style={styles.noContent}>
+            <Text>No results found</Text>
+          </View>
         )}
         <Snackbar visible={loading}>Opening...</Snackbar>
       </View>

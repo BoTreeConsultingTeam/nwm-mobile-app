@@ -1,11 +1,12 @@
 import React from 'react';
-import {Dimensions, Image, StyleSheet, Text, View} from 'react-native';
-import {Card} from 'react-native-paper';
+import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
+import { Card } from 'react-native-paper';
 import CircleCheckGreen from '../../assets/icons/circle-check-green.svg';
 import DateIcon from '../../assets/icons/date.svg';
-import {colors, fontFaces, fontSizes} from '../../styles';
+import { colors, fontFaces, fontSizes } from '../../styles';
 import Ripple from '../common/ripple';
-const RecentItem = ({navigation, item}) => {
+import moment from 'moment-timezone';
+const RecentItem = ({ navigation, item }) => {
   return (
     <Card
       style={styles.card}
@@ -16,18 +17,25 @@ const RecentItem = ({navigation, item}) => {
       }}>
       <Ripple
         style={styles.main}
-        onPress={() => navigation.navigate('photo-editor')}>
-        <View style={styles.imageView}>
+        onPress={() =>
+          navigation.navigate('homeStack', {
+            screen: 'projectDetails',
+            params: { projectId: item.projectId, edit: false },
+          })
+        }>
+        {/* <View style={styles.imageView}>
           <Image source={item.image} style={styles.image} />
-        </View>
+        </View> */}
         <View style={styles.detailsView}>
           <View style={styles.title}>
-            <Text style={styles.titleText}>{item.name}</Text>
+            <Text style={styles.titleText}>{item.projectName}</Text>
             <CircleCheckGreen />
           </View>
           <View style={styles.date}>
             <DateIcon />
-            <Text style={styles.dateText}>{item.date}</Text>
+            <Text style={styles.dateText}>
+              {item.createdOn && moment(item.createdOn).format('DD/MM/YYYY')}
+            </Text>
           </View>
           <Text style={styles.descriptionText} numberOfLines={2}>
             {item.note}
@@ -45,7 +53,7 @@ const styles = StyleSheet.create({
   card: {
     marginRight: 10,
     marginBottom: 10,
-    height: 110,
+    height: 80,
     marginLeft: 10,
     marginTop: 10,
     backgroundColor: '#fff',

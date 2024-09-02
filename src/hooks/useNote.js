@@ -9,7 +9,7 @@ import {
   deleteProjectNote,
   getInspectionNotes,
   getProjectNotes,
-} from '../api /notes';
+} from '../api/notes';
 
 export const useNote = ({ params }) => {
   const [isAddNoteModalOpen, setAddNoteModalOpen] = useState(false);
@@ -39,6 +39,11 @@ export const useNote = ({ params }) => {
 
   const handleAddNoteClick = () => {
     setAddNoteModalOpen(!isAddNoteModalOpen);
+  };
+
+  const handleCloseNoteClick = () => {
+    setAddNoteModalOpen(false);
+    setEditData({});
   };
 
   const handleTabChange = tab => {
@@ -210,6 +215,7 @@ export const useNote = ({ params }) => {
       handleTabChange,
       handleDeleteNote,
       handleEditNoteClick,
+      handleCloseNoteClick,
     },
   ];
 };

@@ -1,13 +1,13 @@
-import React, {useState} from 'react';
-import {useFetchAPIData} from './common';
-import {useSelector} from 'react-redux';
-import {getDashboardData} from '../api /home';
+import React, { useState } from 'react';
+import { useFetchAPIData } from './common';
+import { useSelector } from 'react-redux';
+import { getDashboardData } from '../api/home';
 import Camera from '../assets/icons/camera.svg';
 import Calender from '../assets/icons/calendar.svg';
 import Check from '../assets/icons/check.svg';
 import Project from '../assets/icons/project.svg';
-import {spacing} from '../styles';
-import {useIsFocused} from '@react-navigation/native';
+import { spacing } from '../styles';
+import { useIsFocused } from '@react-navigation/native';
 
 export const useDashboard = () => {
   const [dashboardData, setDashboardData] = useState([]);
@@ -25,7 +25,7 @@ export const useDashboard = () => {
           flex: 1,
           backgroundColor: '#FFFBF2',
           shadowColor: '#000000',
-          shadowOffset: {width: 0, height: 12},
+          shadowOffset: { width: 0, height: 12 },
           shadowOpacity: 0.58,
           shadowRadius: 16.0,
           elevation: 24,
@@ -44,7 +44,7 @@ export const useDashboard = () => {
           flex: 1,
           backgroundColor: '#EAF9FF',
           shadowColor: '#000000',
-          shadowOffset: {width: 0, height: 12},
+          shadowOffset: { width: 0, height: 12 },
           shadowOpacity: 0.58,
           shadowRadius: 16.0,
           elevation: 24,
@@ -63,7 +63,7 @@ export const useDashboard = () => {
           flex: 1,
           backgroundColor: '#EAF9FF',
           shadowColor: '#000000',
-          shadowOffset: {width: 0, height: 12},
+          shadowOffset: { width: 0, height: 12 },
           shadowOpacity: 0.58,
           shadowRadius: 16.0,
           elevation: 24,
@@ -82,7 +82,7 @@ export const useDashboard = () => {
           flex: 1,
           backgroundColor: '#EAF9FF',
           shadowColor: '#000000',
-          shadowOffset: {width: 0, height: 12},
+          shadowOffset: { width: 0, height: 12 },
           shadowOpacity: 0.58,
           shadowRadius: 16.0,
           elevation: 24,
@@ -97,13 +97,13 @@ export const useDashboard = () => {
     setDashboardData(utilityCards);
   };
 
-  const [{isLoading}] = useFetchAPIData({
+  const [{ isLoading }] = useFetchAPIData({
     accessPath: ['data'],
     apiCallCondition: isFocused,
     dependencyArray: [isFocused],
-    apiParams: {userId: user.id},
+    apiParams: { userId: user.id },
     apiFunction: getDashboardData,
     successCb: successCb,
   });
-  return [{dashboardData, isLoading}, {}];
+  return [{ dashboardData, isLoading }, {}];
 };

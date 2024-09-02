@@ -5,7 +5,7 @@ import {
   getRequestProjectList,
   projectReject,
   projectStatusChange,
-} from '../api /project';
+} from '../api/project';
 import { useSelector } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
 

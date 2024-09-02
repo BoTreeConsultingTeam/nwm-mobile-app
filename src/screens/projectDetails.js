@@ -15,7 +15,7 @@ import { useProjectDetails } from '../hooks/useProjectDetails';
 import moment from 'moment-timezone';
 
 const ProjectDetails = ({ navigation, route }) => {
-  const { projectId } = route?.params;
+  const { projectId, edit } = route?.params;
 
   const [
     { isLoading, projectDetails, visible },
@@ -30,11 +30,13 @@ const ProjectDetails = ({ navigation, route }) => {
       case 'Photos':
         navigation.navigate('uploadPhoto', {
           projectId: projectId,
+          edit,
         });
         break;
       case 'Note':
         navigation.navigate('note', {
           projectId: projectId,
+          edit,
         });
         break;
       case 'Documents':
@@ -249,16 +251,18 @@ const ProjectDetails = ({ navigation, route }) => {
                 {projectDetails.lenderEmail}
               </Text>
             </View>
-            <View style={{ paddingHorizontal: 20 }}>
-              <Button
-                text={'Submit'}
-                isLoading={false}
-                textStyle={styles.buttonText}
-                rippleContainerBorderRadius={radius.radius8}
-                style={styles.button}
-                onPress={() => handleModal()}
-              />
-            </View>
+            {edit && (
+              <View style={{ paddingHorizontal: 20 }}>
+                <Button
+                  text={'Submit'}
+                  isLoading={false}
+                  textStyle={styles.buttonText}
+                  rippleContainerBorderRadius={radius.radius8}
+                  style={styles.button}
+                  onPress={() => handleModal()}
+                />
+              </View>
+            )}
             <ProjectConfirmationModal
               modalOpen={visible}
               closeModal={handleModal}

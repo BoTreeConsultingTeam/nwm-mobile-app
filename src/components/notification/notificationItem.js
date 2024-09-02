@@ -1,35 +1,36 @@
 import React from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
-import {Card} from 'react-native-paper';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import { Card } from 'react-native-paper';
 import DemoImage from '../../assets/icons/demo2.png';
-import {colors, fontFaces, fontSizes} from '../../styles';
+import { colors, fontFaces, fontSizes } from '../../styles';
 import Ripple from '../common/ripple';
 import DateIcon from '../../assets/icons/date.svg';
+import moment from 'moment-timezone';
 
-const NotificationItem = ({item, navigation}) => {
+const NotificationItem = ({ item, navigation }) => {
   return (
     <Card
       style={styles.card}
       mode="elevated"
-      elevation={3}
+      elevation={2}
       theme={{
-        roundness: 2,
+        roundness: 1,
       }}>
       <Ripple
         style={styles.main}
-        // onPress={() => navigation.navigate('photo-editor')}
+      // onPress={() => navigation.navigate('photo-editor')}
       >
-        <View style={styles.imageView}>
+        {/* <View style={styles.imageView}>
           <Image source={item.image} style={styles.image} />
-        </View>
+        </View> */}
         <View style={styles.detailsView}>
           <View style={styles.title}>
-            <Text style={styles.titleText}>{item.name}</Text>
-            <Text style={styles.time}>{item.time}</Text>
+            <Text style={styles.titleText}>{item?.name}</Text>
+            <Text style={styles.time}>{moment(item.createdOn).fromNow()}</Text>
           </View>
           <View style={styles.descriptionView}>
-            <Text style={styles.descriptionText}>{item.text}</Text>
-            {item.date && (
+            <Text style={styles.descriptionText}>{item.message}</Text>
+            {item?.date && (
               <View style={styles.date}>
                 <DateIcon />
                 <Text style={styles.dateText}>{item.date}</Text>
@@ -49,9 +50,11 @@ const styles = StyleSheet.create({
   card: {
     marginRight: 10,
     marginBottom: 10,
-    height: 70,
-    marginLeft: 10,
-    marginTop: 10,
+    paddingBottom: 15,
+    flex: 1,
+    // height: 'auto',
+    marginLeft: 5,
+    marginTop: 5,
     backgroundColor: '#fff',
   },
   detailCardContainer: {
@@ -94,10 +97,12 @@ const styles = StyleSheet.create({
   },
   descriptionText: {
     fontSize: fontSizes.size14,
+    color: colors.textNormal,
   },
   time: {
     fontSize: fontSizes.size12,
     ...fontFaces.regular.normal,
+    color: colors.placeHolder,
   },
   descriptionView: {
     flexDirection: 'row',

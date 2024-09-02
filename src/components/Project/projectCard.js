@@ -41,6 +41,7 @@ const ProjectCard = ({ navigation, item }) => {
       onPress={() =>
         navigation.navigate('projectDetails', {
           projectId: item.id,
+          edit: true,
         })
       }
       style={[

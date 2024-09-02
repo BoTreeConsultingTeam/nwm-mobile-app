@@ -46,7 +46,7 @@ const useFetchAPIData = ({
               data: defaultResponseValue,
             });
             failureCb?.(res);
-            !hideErrorMessage && showToast(errorMessage || res.data.errors);
+            !hideErrorMessage && showToast(errorMessage || res.data.message);
           }
         })
         .catch(error => {

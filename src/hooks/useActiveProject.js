@@ -1,7 +1,7 @@
 /* eslint-disable no-lone-blocks */
 import React, { useCallback, useEffect, useState } from 'react';
 import { useFetchAPIData } from './common';
-import { getActiveProjectList } from '../api /project';
+import { getActiveProjectList } from '../api/project';
 import { useSelector } from 'react-redux';
 import debounce from 'lodash.debounce';
 import { useIsFocused } from '@react-navigation/native';

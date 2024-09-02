@@ -36,6 +36,8 @@ const UploadPhoto = ({ navigation, route }) => {
     route: route,
   });
 
+  const { edit } = route.params;
+
   const renderItem = (item, index) => {
     let specialStyle = {};
     if ((index + 1) % 2 === 0) {
@@ -50,11 +52,13 @@ const UploadPhoto = ({ navigation, route }) => {
           resizeMode={'cover'} // cover or contain its upto you view look
           style={styles.image}
         />
-        <TouchableOpacity
-          style={styles.closeIcon}
-          onPress={() => handleDeleteImage(item.path)}>
-          <Icon source={'close-circle'} size={20} />
-        </TouchableOpacity>
+        {edit && (
+          <TouchableOpacity
+            style={styles.closeIcon}
+            onPress={() => handleDeleteImage(item.path)}>
+            <Icon source={'close-circle'} size={20} />
+          </TouchableOpacity>
+        )}
       </View>
     );
   };
@@ -114,32 +118,34 @@ const UploadPhoto = ({ navigation, route }) => {
             <Text>No images found</Text>
           </View>
         )}
-        <Portal>
-          <FAB.Group
-            fabStyle={styles.fabBackground}
-            color={colors.white}
-            containerStyle={styles.fabContainer}
-            open={open}
-            visible={fabShow}
-            backdropColor={'transparent'}
-            actions={[
-              {
-                icon: 'camera',
-                label: 'Capture',
-                color: colors.primary,
-                onPress: () => checkForPermission('camera'),
-              },
-              {
-                icon: 'image',
-                label: 'Upload',
-                color: colors.primary,
-                onPress: () => checkForPermission('gallery'),
-              },
-            ]}
-            icon={open ? 'close' : 'plus'}
-            onStateChange={onStateChange}
-          />
-        </Portal>
+        {edit && (
+          <Portal>
+            <FAB.Group
+              fabStyle={styles.fabBackground}
+              color={colors.white}
+              containerStyle={styles.fabContainer}
+              open={open}
+              visible={fabShow}
+              backdropColor={'transparent'}
+              actions={[
+                {
+                  icon: 'camera',
+                  label: 'Capture',
+                  color: colors.primary,
+                  onPress: () => checkForPermission('camera'),
+                },
+                {
+                  icon: 'image',
+                  label: 'Upload',
+                  color: colors.primary,
+                  onPress: () => checkForPermission('gallery'),
+                },
+              ]}
+              icon={open ? 'close' : 'plus'}
+              onStateChange={onStateChange}
+            />
+          </Portal>
+        )}
       </View>
     </WithContainer>
   );

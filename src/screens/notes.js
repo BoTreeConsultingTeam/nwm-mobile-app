@@ -18,44 +18,6 @@ import { useNote } from '../hooks/useNote';
 import moment from 'moment-timezone';
 
 const Notes = ({ navigation, route }) => {
-  const demoData = [
-    {
-      date: 'Jan 28, 2023 | 15:42',
-      name: 'Joseph A. Bess',
-      note: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis laboriosam cupiditate aut illo debitis, sunt, inventore sequi nobis qui quis non aspernatur quo consectetur reprehenderit accusamus blanditiis dolorum. Repudiandae, expedita.',
-    },
-    {
-      date: 'Dec 28, 2022 | 15:42',
-      name: 'Bradley A. Rodgers',
-      note: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illo rerum blanditiis ducimus laudantium cum maxime exercitationem excepturi magni architecto, expedita, quibusdam animi quae temporibus ad voluptas quaerat aliquam? Quod, id.',
-    },
-    {
-      date: 'Nov 28, 2022 | 08:42',
-      name: 'David N. Arrington',
-      note: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, doloremque voluptate ipsa eos ipsum fugiat, eligendi accusamus quibusdam laboriosam pariatur, veritatis ducimus repudiandae error aut sunt? Deleniti a exercitationem perspiciatis?',
-    },
-    {
-      date: 'Oct 21, 2022 | 16:30',
-      name: 'Allen M. Rugg',
-      note: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, earum sit tempora optio ratione, iusto, eveniet unde voluptate aspernatur vitae assumenda expedita eum. Recusandae quisquam, culpa porro officia corrupti suscipit?',
-    },
-    {
-      date: 'Jun 28, 2022 | 21:56',
-      name: 'Shawn N. Steppe',
-      note: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iure fugit illo et, soluta sunt maxime quasi officiis numquam expedita? Beatae quod unde earum illum harum, debitis eos aperiam asperiores fugiat.',
-    },
-    {
-      date: 'Mar 12, 2022 | 15:00',
-      name: 'David N. Arrington',
-      note: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, doloremque voluptate ipsa eos ipsum fugiat, eligendi accusamus quibusdam laboriosam pariatur, veritatis ducimus repudiandae error aut sunt? Deleniti a exercitationem perspiciatis?',
-    },
-    {
-      date: 'Jan 04, 2022 | 12:00',
-      name: 'Allen M. Rugg',
-      note: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, earum sit tempora optio ratione, iusto, eveniet unde voluptate aspernatur vitae assumenda expedita eum. Recusandae quisquam, culpa porro officia corrupti suscipit?',
-    },
-  ];
-
   const [
     {
       isAddNoteModalOpen,
@@ -72,11 +34,13 @@ const Notes = ({ navigation, route }) => {
       handleTabChange,
       handleDeleteNote,
       handleEditNoteClick,
+      handleCloseNoteClick,
     },
   ] = useNote({
     params: route.params,
   });
 
+  const { edit } = route.params;
   const renderItem = (item, type) => {
     return (
       <Card
@@ -100,21 +64,25 @@ const Notes = ({ navigation, route }) => {
           </View>
           <View style={styles.name}>
             <Text style={styles.text}>{item.firstName}</Text>
-            <Ripple
-              rippleContainerBorderRadius={50}
-              onPress={() => handleEditNoteClick(item)}>
-              <Icon source="pencil" size={18} color={colors.secondary} />
-            </Ripple>
+            {edit && (
+              <Ripple
+                rippleContainerBorderRadius={50}
+                onPress={() => handleEditNoteClick(item)}>
+                <Icon source="pencil" size={18} color={colors.secondary} />
+              </Ripple>
+            )}
           </View>
           <View style={styles.name}>
             <Tooltip title={item.note}>
               <Text style={[styles.text, styles.note]}>{item.note}</Text>
             </Tooltip>
-            <Ripple
-              rippleContainerBorderRadius={50}
-              onPress={() => handleDeleteNote(item)}>
-              <Icon source="delete" size={18} color={colors.secondary} />
-            </Ripple>
+            {edit && (
+              <Ripple
+                rippleContainerBorderRadius={50}
+                onPress={() => handleDeleteNote(item)}>
+                <Icon source="delete" size={18} color={colors.secondary} />
+              </Ripple>
+            )}
           </View>
         </View>
       </Card>
@@ -181,22 +149,24 @@ const Notes = ({ navigation, route }) => {
             </TabScreen>
           </Tabs>
         </TabsProvider>
-        <Portal>
-          <FAB.Group
-            visible={!isAddNoteModalOpen}
-            fabStyle={styles.fabBackground}
-            color={colors.white}
-            style={styles.fabContainer}
-            actions={[]}
-            icon={'plus'}
-            open={false}
-            onStateChange={handleAddNoteClick}
-          />
-        </Portal>
+        {edit && (
+          <Portal>
+            <FAB.Group
+              visible={!isAddNoteModalOpen}
+              fabStyle={styles.fabBackground}
+              color={colors.white}
+              style={styles.fabContainer}
+              actions={[]}
+              icon={'plus'}
+              open={false}
+              onStateChange={handleAddNoteClick}
+            />
+          </Portal>
+        )}
       </View>
       <AddNoteModal
         modalOpen={isAddNoteModalOpen}
-        closeModal={handleAddNoteClick}
+        closeModal={handleCloseNoteClick}
         handleNoteSubmit={handleNoteSubmit}
         currentTab={currentTab}
         editNoteData={editNoteData}

@@ -34,3 +34,6 @@ export const submitProject = body => {
 export const getDocList = body => {
   return get(endpoints.documentList, body);
 };
+export const getRecentProject = body => {
+  return get(endpoints.recentProject, body);
+};

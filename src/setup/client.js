@@ -1,7 +1,8 @@
 import axios from 'axios';
 import NetInfo from '@react-native-community/netinfo';
-import { getToken } from '../utility/methods/localStorage';
+import { getToken, removeToken } from '../utility/methods/localStorage';
 import { getAPIBaseURL, showToast } from '../utility/methods/other';
+import { store } from './store';
 // import { getToken, showToast, getAPIBaseURL } from "../utility/index";
 // import store from "./store";
 // import { constants } from "../constants";
@@ -42,6 +43,11 @@ client.interceptors.response.use(
     return response;
   },
   function (error) {
+    if (error.response.status === 403 || error.response.status === 401) {
+      removeToken();
+      store.dispatch({ type: 'LOGOUT' });
+      showToast("You've been logged out");
+    }
     NetInfo.fetch().then(state => {
       // state.isConnected && showToast(i18nInstance.t('messages.tryAgain'));
     });

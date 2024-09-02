@@ -3,7 +3,7 @@ import { useFetchAPIData } from './common';
 import {
   createUnavibilityCalendar,
   getUnavibilityCalendar,
-} from '../api /calendar';
+} from '../api/calendar';
 import { useSelector } from 'react-redux';
 
 export const useCalendar = () => {
