@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "511934946495",
-    "project_id": "north-west-monitoring",
-    "storage_bucket": "north-west-monitoring.appspot.com"
+    "project_number": "1068147279800",
+    "project_id": "nwmriskmanagement",
+    "storage_bucket": "nwmriskmanagement.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:511934946495:android:e9b08d4cd7a74f1432ba0a",
+        "mobilesdk_app_id": "1:1068147279800:android:f3341c759d784ceddb314d",
         "android_client_info": {
-          "package_name": "com.nwmriskmanagement.NorthwestMonitoring"
+          "package_name": "com.company.nwmriskmanagement"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCMvHKyqkLtlBtxI94r8K2udUmfGTPX71A"
+          "current_key": "AIzaSyBXaU7lfrYA3hSmJXLBkzH9OB3w3h3iS9A"
         }
       ],
       "services": {

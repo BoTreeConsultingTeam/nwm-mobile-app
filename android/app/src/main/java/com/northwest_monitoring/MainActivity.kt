@@ -1,4 +1,4 @@
-package com.nwmriskmanagement.NorthwestMonitoring
+package com.company.nwmriskmanagement
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

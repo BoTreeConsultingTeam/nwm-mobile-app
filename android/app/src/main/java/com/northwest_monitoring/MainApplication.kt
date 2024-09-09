@@ -1,4 +1,4 @@
-package com.nwmriskmanagement.NorthwestMonitoring
+package com.company.nwmriskmanagement
 
 import android.app.Application
 import com.facebook.react.PackageList
