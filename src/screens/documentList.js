@@ -13,7 +13,7 @@ const DocumentList = ({ navigation, route }) => {
     });
 
   const getFileName = url => {
-    return url.split('/').pop().split('.')[0];
+    return url.split('/').pop();
   };
 
   return (

@@ -39,9 +39,6 @@ export const useUploadPhoto = ({ navigation, route }) => {
           userId: user.id,
           projectId: route.params?.projectId,
         });
-        // navigation.navigate('mediaPage', {
-        //   path: image.path,
-        // });
       });
     } catch (error) {
       showToast('Oops, something went wrong!');
@@ -53,6 +50,7 @@ export const useUploadPhoto = ({ navigation, route }) => {
       ImagePicker.openPicker({
         mediaType: 'photo',
         multiple: true,
+        maxFiles: 10,
       }).then(photo => {
         const formData = new FormData();
         photo.map(item => {
@@ -69,6 +67,7 @@ export const useUploadPhoto = ({ navigation, route }) => {
         });
       });
     } catch (error) {
+      console.log('🚀 ~ handleGetPhoto ~ error:', error);
       showToast('Oops, something went wrong!');
     }
   };

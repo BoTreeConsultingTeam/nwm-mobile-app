@@ -27,6 +27,7 @@ const Notes = ({ navigation, route }) => {
       isInspectionNoteLoading,
       isProjectNoteLoading,
       editNoteData,
+      noteAddLoading,
     },
     {
       handleAddNoteClick,
@@ -166,6 +167,7 @@ const Notes = ({ navigation, route }) => {
         )}
       </View>
       <AddNoteModal
+        noteAddLoading={noteAddLoading}
         modalOpen={isAddNoteModalOpen}
         closeModal={handleCloseNoteClick}
         handleNoteSubmit={handleNoteSubmit}

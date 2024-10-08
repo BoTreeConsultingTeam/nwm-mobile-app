@@ -48,7 +48,7 @@ const Welcome = () => {
         resizeMode="cover"
         style={styles.image}>
         <View style={styles.logoContainer}>
-          <Image source={AppIcon} style={styles.appIcon} />
+          <Image source={AppIcon} resizeMode="contain" style={styles.appIcon} />
         </View>
         <View style={styles.contentContainer}>
           <Text style={styles.backgroundNwmText}>NWM</Text>
@@ -72,6 +72,8 @@ const styles = StyleSheet.create({
   appIcon: {
     marginBottom: spacing.sm,
     top: -30,
+    width: 300,
+    height: 100,
   },
   linearGradient: {
     width: '100%',

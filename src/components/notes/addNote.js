@@ -13,6 +13,7 @@ const AddNoteModal = ({
   handleNoteSubmit,
   currentTab,
   editNoteData,
+  noteAddLoading,
 }) => {
   const formikRef = useRef(null);
   const getInitialValue = () => {
@@ -39,10 +40,18 @@ const AddNoteModal = ({
             innerRef={formikRef}
             initialValues={getInitialValue()}
             validationSchema={noteSchema}
-            onSubmit={values => {
-              handleNoteSubmit(values, currentTab);
+            onSubmit={(values, action) => {
+              action.setSubmitting(true);
+              handleNoteSubmit(values, currentTab, action);
             }}>
-            {({ handleSubmit, values, touched, errors, setFieldValue }) => (
+            {({
+              handleSubmit,
+              values,
+              touched,
+              errors,
+              setFieldValue,
+              isSubmitting,
+            }) => (
               <>
                 <Text style={styles.text}>
                   {Object.keys(editNoteData).length ? 'Edit' : 'Add'} Note
@@ -71,6 +80,7 @@ const AddNoteModal = ({
                     </Ripple>
                     <Ripple
                       rippleContainerBorderRadius={5}
+                      disabled={isSubmitting || noteAddLoading}
                       onPress={() => handleSubmit()}>
                       <Text style={styles.buttonText}>
                         {Object.keys(editNoteData).length ? 'Update' : 'Save'}

@@ -104,9 +104,11 @@ const MarkUnavailability = ({ navigation }) => {
                 <ScrollView showsVerticalScrollIndicator={true}>
                   {calendarList.length ? (
                     <View style={styles.unavailability}>
-                      {calendarList.map((item, index) => {
+                      {calendarList.reverse().map((item, index) => {
                         return (
-                          <Text style={[styles.text, styles.dateText]}>
+                          <Text
+                            key={index}
+                            style={[styles.text, styles.dateText]}>
                             {moment(item.startDate).format('MMM DD, YYYY')} -{' '}
                             {moment(item.endDate).format('MMM DD, YYYY')}
                           </Text>

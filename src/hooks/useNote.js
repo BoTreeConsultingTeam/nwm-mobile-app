@@ -50,7 +50,8 @@ export const useNote = ({ params }) => {
     setCurrentTab(tab);
   };
 
-  const handleNoteSubmit = (data, type) => {
+  const handleNoteSubmit = (data, type, action) => {
+    handleCloseNoteClick();
     let body = {
       firstName: user.username,
       createdBy: user.id,
@@ -68,6 +69,7 @@ export const useNote = ({ params }) => {
         ...(Object.keys(editNoteData).length && { id: editNoteData.id }),
       });
     }
+    action.setSubmitting(false);
   };
 
   const handleDeleteNote = data => {
@@ -135,7 +137,7 @@ export const useNote = ({ params }) => {
     }
   };
 
-  useFetchAPIData({
+  const [{ isLoading: isProjectNoteAddLoading }] = useFetchAPIData({
     apiCallCondition: Object.keys(projectNoteBody).length,
     apiParams: projectNoteBody,
     apiFunction: addProjectNote,
@@ -160,7 +162,7 @@ export const useNote = ({ params }) => {
     },
   });
 
-  useFetchAPIData({
+  const [{ isLoading: isInspectionNoteAddLoading }] = useFetchAPIData({
     apiCallCondition: Object.keys(inspectionNoteBody).length,
     apiParams: inspectionNoteBody,
     apiFunction: addInspectionNote,
@@ -208,6 +210,7 @@ export const useNote = ({ params }) => {
       isInspectionNoteLoading,
       isProjectNoteLoading,
       editNoteData,
+      noteAddLoading: isProjectNoteAddLoading || isInspectionNoteAddLoading,
     },
     {
       handleAddNoteClick,

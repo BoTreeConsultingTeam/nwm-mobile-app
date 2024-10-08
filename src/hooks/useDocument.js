@@ -26,7 +26,7 @@ export const useDocument = ({ route }) => {
   };
 
   const getFileName = url => {
-    return url.split('/').pop().split('.')[0];
+    return url.split('/').pop();
   };
 
   const handleDocumentOpen = url => {
@@ -34,7 +34,7 @@ export const useDocument = ({ route }) => {
       setLoading(true);
       const extension = getFileName(url);
 
-      const localFile = `${RNFS.DocumentDirectoryPath}/temporaryfile.${extension}`;
+      const localFile = `${RNFS.DocumentDirectoryPath}/${extension}`;
 
       const options = {
         fromUrl: url,
