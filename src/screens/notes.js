@@ -65,24 +65,25 @@ const Notes = ({ navigation, route }) => {
           <View style={styles.name}>
             <Text style={styles.text}>{item.firstName}</Text>
             {edit && (
-              <Ripple
-                rippleContainerBorderRadius={50}
-                onPress={() => handleEditNoteClick(item)}>
-                <Icon source="pencil" size={18} color={colors.secondary} />
-              </Ripple>
+              <View style={styles.iconView}>
+                <Ripple
+                  rippleContainerBorderRadius={50}
+                  onPress={() => handleEditNoteClick(item)}>
+                  <Icon source="pencil" size={18} color={colors.secondary} />
+                </Ripple>
+                <Ripple
+                  style={styles.deleteIcon}
+                  rippleContainerBorderRadius={50}
+                  onPress={() => handleDeleteNote(item)}>
+                  <Icon source="delete" size={18} color={colors.secondary} />
+                </Ripple>
+              </View>
             )}
           </View>
           <View style={styles.name}>
             <Tooltip title={item.note}>
               <Text style={[styles.text, styles.note]}>{item.note}</Text>
             </Tooltip>
-            {edit && (
-              <Ripple
-                rippleContainerBorderRadius={50}
-                onPress={() => handleDeleteNote(item)}>
-                <Icon source="delete" size={18} color={colors.secondary} />
-              </Ripple>
-            )}
           </View>
         </View>
       </Card>
@@ -247,6 +248,14 @@ const styles = StyleSheet.create({
   name: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  iconView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  deleteIcon: {
+    marginLeft: 10,
   },
 });
 export default Notes;

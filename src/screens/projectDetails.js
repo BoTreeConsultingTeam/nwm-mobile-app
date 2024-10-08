@@ -24,6 +24,7 @@ const ProjectDetails = ({ navigation, route }) => {
     projectId: projectId,
     navigation: navigation,
   });
+  console.log('🚀 ~ ProjectDetails ~ projectDetails:', projectDetails.endDate);
 
   const handleCardClick = item => {
     switch (item.name) {
@@ -155,123 +156,137 @@ const ProjectDetails = ({ navigation, route }) => {
   };
 
   return (
-    <WithContainer
-      headerStyle={styles.header}
-      onBackPress={() => navigation.goBack()}
-      pageTitle="Project Details"
-      actions={[]}
-      scrollView={isLoading ? false : true}
-      scrollViewStyle={styles.scrollView}
-      searchBar={false}>
-      <View style={styles.container}>
-        {isLoading ? (
-          <View style={styles.noContent}>
-            <ActivityIndicator animating color={colors.primary} />
-          </View>
-        ) : (
-          <View style={styles.container}>
-            <View style={styles.subContainer}>
-              <View style={styles.projectName}>
-                <Icon
-                  source="home-outline"
-                  size={24}
-                  color={colors.secondary}
-                />
-                <View style={styles.projectDetails}>
-                  <Text
-                    style={[
-                      styles.projectText,
-                      { fontWeight: '500', fontSize: fontSizes.size18 },
-                    ]}>
-                    {projectDetails?.name}
+    <>
+      <WithContainer
+        headerStyle={styles.header}
+        onBackPress={() => navigation.goBack()}
+        pageTitle="Project Details"
+        actions={[]}
+        scrollView={isLoading ? false : true}
+        scrollViewStyle={styles.scrollView}
+        searchBar={false}>
+        <View style={styles.container}>
+          {isLoading ? (
+            <View style={styles.noContent}>
+              <ActivityIndicator animating color={colors.primary} />
+            </View>
+          ) : (
+            <View style={styles.container}>
+              <View style={styles.subContainer}>
+                <View style={styles.projectName}>
+                  <Icon
+                    source="home-outline"
+                    size={24}
+                    color={colors.secondary}
+                  />
+                  <View style={styles.projectDetails}>
+                    <Text
+                      style={[
+                        styles.projectText,
+                        { fontWeight: '500', fontSize: fontSizes.size18 },
+                      ]}>
+                      {projectDetails?.name}
+                    </Text>
+                  </View>
+                  {renderStatus(projectDetails.status)}
+                </View>
+                <View style={styles.location}>
+                  <LocationPinIcon style={styles.locationIcon} />
+                  <Text style={styles.locationText}>
+                    {projectDetails?.projectAddress}
                   </Text>
                 </View>
-                {renderStatus(projectDetails.status)}
-              </View>
-              <View style={styles.location}>
-                <LocationPinIcon style={styles.locationIcon} />
-                <Text style={styles.locationText}>
-                  {projectDetails?.projectAddress}
-                </Text>
-              </View>
-              <View style={styles.dates}>
-                <View style={styles.dateContact}>
-                  <View style={styles.date}>
-                    <DateIcon style={styles.dateIcon} />
-                    <View style={styles.dateContainer}>
-                      <Text style={styles.dateTextField}>Start: </Text>
-                      <Text style={styles.dateText}>
-                        {moment(projectDetails?.startDate).format('DD/MM/YYYY')}
-                      </Text>
+                <View style={styles.dates}>
+                  <View style={styles.dateContact}>
+                    <View style={styles.date}>
+                      <DateIcon style={styles.dateIcon} />
+                      <View style={styles.dateContainer}>
+                        <Text style={styles.dateTextField}>Start: </Text>
+                        <Text style={styles.dateText}>
+                          {moment(projectDetails?.startDate).format(
+                            'MM/DD/YYYY',
+                          )}
+                        </Text>
+                      </View>
                     </View>
-                  </View>
-                  <View style={styles.date}>
-                    <DateIcon style={styles.dateIcon} />
-                    <View style={styles.dateContainer}>
-                      <Text style={styles.dateTextField}>End:</Text>
-                      <Text style={styles.dateText}>
-                        {' '}
-                        {moment(projectDetails?.endDate).format('DD/MM/YYYY')}
-                      </Text>
+                    <View style={styles.date}>
+                      <DateIcon style={styles.dateIcon} />
+                      <View style={styles.dateContainer}>
+                        <Text style={styles.dateTextField}>End:</Text>
+                        <Text style={styles.dateText}>
+                          {' '}
+                          {moment(projectDetails?.clientDueDate).format(
+                            'MM/DD/YYYY',
+                          )}
+                        </Text>
+                      </View>
                     </View>
                   </View>
                 </View>
+                <View style={styles.profile}>
+                  <PersonIcon style={styles.profileIcon} />
+                  <Text style={styles.profileText}>
+                    {projectDetails?.borrowerName}
+                  </Text>
+                </View>
               </View>
-              <View style={styles.profile}>
-                <PersonIcon style={styles.profileIcon} />
-                <Text style={styles.profileText}>
-                  {projectDetails?.borrowerName}
-                </Text>
-              </View>
-            </View>
-            <View style={styles.detailCard}>
-              <FlatList
-                data={detailsCardList}
-                renderItem={({ item }) => detailsCard(item)}
-                numColumns={2}
-              />
-            </View>
-            <Instructions
-              title={'Inspection Notes'}
-              instructionList={projectDetails.inspectorNotes}
-            />
-            <Instructions
-              title={'Miscellaneous Notes'}
-              instructionList={projectDetails.miscNotes}
-            />
-            <View style={styles.personDetails}>
-              <Text style={styles.personField}>LBC: </Text>
-              <Text style={styles.personValue}>2345677</Text>
-            </View>
-            <View style={styles.personDetails}>
-              <Text style={styles.personField}>POC: </Text>
-              <Text style={styles.personValue}>
-                {projectDetails.lenderIndividual},{' '}
-                {projectDetails.lenderCompany}, {projectDetails.lenderPhoneNo}{' '}
-                {projectDetails.lenderEmail}
-              </Text>
-            </View>
-            {edit && (
-              <View style={{ paddingHorizontal: 20 }}>
-                <Button
-                  text={'Submit'}
-                  isLoading={false}
-                  textStyle={styles.buttonText}
-                  rippleContainerBorderRadius={radius.radius8}
-                  style={styles.button}
-                  onPress={() => handleModal()}
+              <View style={styles.detailCard}>
+                <FlatList
+                  data={detailsCardList}
+                  renderItem={({ item }) => detailsCard(item)}
+                  numColumns={2}
                 />
               </View>
-            )}
-            <ProjectConfirmationModal
-              modalOpen={visible}
-              closeModal={handleModal}
-              handleProjectSubmit={handleProjectSubmit}
-            />
-          </View>
-        )}
-      </View>
-    </WithContainer>
+              <Instructions
+                title={'Inspection Notes'}
+                instructionList={projectDetails.inspectorNotes}
+              />
+              <Instructions
+                title={'Miscellaneous Notes'}
+                instructionList={projectDetails.miscNotes}
+              />
+              <View style={styles.personDetails}>
+                <Text style={styles.personField}>LBC: </Text>
+                <Text style={styles.personValue}>2345677</Text>
+              </View>
+              <View style={styles.personDetails}>
+                <Text style={styles.personField}>POC: </Text>
+                <Text style={styles.personValue}>
+                  {projectDetails.lenderIndividual},{' '}
+                  {projectDetails.lenderCompany}, {projectDetails.lenderPhoneNo}{' '}
+                  {projectDetails.lenderEmail}
+                </Text>
+              </View>
+
+              <ProjectConfirmationModal
+                modalOpen={visible}
+                closeModal={handleModal}
+                handleProjectSubmit={handleProjectSubmit}
+              />
+            </View>
+          )}
+        </View>
+      </WithContainer>
+      {edit && !isLoading && (
+        <View
+          style={{
+            paddingHorizontal: 20,
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            bottom: 0,
+          }}>
+          <Button
+            text={'Submit'}
+            isLoading={false}
+            textStyle={styles.buttonText}
+            rippleContainerBorderRadius={radius.radius8}
+            style={styles.button}
+            onPress={() => handleModal()}
+          />
+        </View>
+      )}
+    </>
   );
 };
 

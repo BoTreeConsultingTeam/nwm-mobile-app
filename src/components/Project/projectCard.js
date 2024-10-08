@@ -79,7 +79,7 @@ const ProjectCard = ({ navigation, item }) => {
                 <View style={styles.dateContainer}>
                   <Text style={styles.dateTextField}>Start:</Text>
                   <Text style={styles.dateText}>
-                    {moment(item.startDate).format('DD/MM/YYYY')}
+                    {moment(item.startDate).format('MM/DD/YYYY')}
                   </Text>
                 </View>
               </View>
@@ -99,10 +99,8 @@ const ProjectCard = ({ navigation, item }) => {
                   <Text style={styles.dateTextField}>End:</Text>
                   <Text style={styles.dateText}>
                     {' '}
-                    {item.estimatedCompletionDate
-                      ? moment(item.estimatedCompletionDate).format(
-                        'DD/MM/YYYY',
-                      )
+                    {item.clientDueDate
+                      ? moment(item.clientDueDate).format('MM/DD/YYYY')
                       : '-'}
                   </Text>
                 </View>

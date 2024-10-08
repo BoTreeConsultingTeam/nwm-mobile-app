@@ -12,7 +12,7 @@ import { Button } from '../components';
 import { colors, fontSizes, radius, spacing } from '../styles';
 import { setWelcomeScreenDisplay } from '../reducers/welcome';
 import { useDispatch } from 'react-redux';
-import AppIcon from '../assets/icons/bootSplash.png';
+import AppIcon from '../assets/icons/AppLogo.png';
 import BackgroundImage from '../assets/icons/radial-bg.png';
 
 const xml = `
@@ -53,9 +53,6 @@ const Welcome = () => {
         <View style={styles.contentContainer}>
           <Text style={styles.backgroundNwmText}>NWM</Text>
           <Text style={styles.welcomeText}>Welcome !</Text>
-          <Text style={styles.description}>
-            Lorem Ipsum has been the industry's standard
-          </Text>
           <Button
             text={'Login'}
             isLoading={false}

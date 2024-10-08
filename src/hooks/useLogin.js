@@ -8,6 +8,7 @@ export const useLogin = () => {
   const [loginBody, setLoginBody] = useState({});
   const dispatch = useDispatch();
   const successCb = data => {
+    console.log('🚀 ~ successCb ~ data:', data);
     setLoginBody({});
     dispatch(setToken(data?.data));
   };

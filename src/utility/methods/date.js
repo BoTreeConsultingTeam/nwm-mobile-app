@@ -1,9 +1,9 @@
 import moment from 'moment-timezone';
-import {capitalize} from './string';
+import { capitalize } from './string';
 
 // moment.tz.setDefault("Asia/Tokyo");
 
-export const formatDate = date => date && moment(date).format('DD/MM/YYYY');
+export const formatDate = date => date && moment(date).format('MM/DD/YYYY');
 
 export const formatDateBySpecifiedFormat = (date, format) =>
   date && format && moment(date).format(format);
@@ -26,11 +26,9 @@ export const timeTo = date => {
     if (hoursDiff > 24) {
       returnValue = capitalize(moment(date).toNow(true));
     } else {
-      returnValue = `${hoursDiff} ${
-        hoursDiff > 0 ? (hoursDiff > 1 ? 'hours' : 'hour') : ''
-      } ${minutesDiff} ${
-        minutesDiff > 0 ? (minutesDiff > 1 ? 'minutes' : 'minute') : ''
-      }`;
+      returnValue = `${hoursDiff} ${hoursDiff > 0 ? (hoursDiff > 1 ? 'hours' : 'hour') : ''
+        } ${minutesDiff} ${minutesDiff > 0 ? (minutesDiff > 1 ? 'minutes' : 'minute') : ''
+        }`;
     }
   }
   return returnValue;

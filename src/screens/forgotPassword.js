@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 import { Input, Button } from '../components';
 import { colors, fontSizes, radius, spacing } from '../styles';
-import AppIcon from '../assets/icons/bootSplash.png';
+import AppIcon from '../assets/icons/AppLogo.png';
 import { forgotPasswordSchema } from '../schema/login';
 import { useForgotPassword } from '../hooks/useForgotPassword';
 
@@ -36,7 +36,7 @@ const ForgotPassword = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
-        <Image source={AppIcon} style={styles.appIcon} />
+        <Image source={AppIcon} resizeMode="contain" style={styles.appIcon} />
       </View>
       <View style={styles.loginForm}>
         <Text style={styles.loginTitle}>Forgot Password</Text>
@@ -89,6 +89,8 @@ const styles = StyleSheet.create({
   appIcon: {
     marginBottom: spacing.sm,
     top: -20,
+    width: 200,
+    height: 100,
   },
   container: {
     flex: 1,

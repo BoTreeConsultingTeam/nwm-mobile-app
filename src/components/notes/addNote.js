@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Modal, Portal } from 'react-native-paper';
 import { colors, fontFaces, fontSizes, spacing } from '../../styles';
 import Ripple from '../common/ripple';
@@ -47,33 +47,37 @@ const AddNoteModal = ({
                 <Text style={styles.text}>
                   {Object.keys(editNoteData).length ? 'Edit' : 'Add'} Note
                 </Text>
-                <View style={styles.inputContainer}>
-                  <Input
-                    inputStyle={styles.inputStyle}
-                    placeHolder="Enter your note"
-                    multiline
-                    numberOfLines={4}
-                    name="notes"
-                    onChange={text => {
-                      setFieldValue('notes', text);
-                    }}
-                    value={values?.notes}
-                    showError={errors.notes && touched.notes}
-                    error={errors.notes}
-                  />
-                </View>
-                <View style={styles.buttonContainer}>
-                  <Ripple rippleContainerBorderRadius={5} onPress={handleClose}>
-                    <Text style={styles.buttonText}>Cancel</Text>
-                  </Ripple>
-                  <Ripple
-                    rippleContainerBorderRadius={5}
-                    onPress={() => handleSubmit()}>
-                    <Text style={styles.buttonText}>
-                      {Object.keys(editNoteData).length ? 'Update' : 'Save'}
-                    </Text>
-                  </Ripple>
-                </View>
+                <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
+                  <View style={styles.inputContainer}>
+                    <Input
+                      inputStyle={styles.inputStyle}
+                      placeHolder="Enter your note"
+                      multiline
+                      numberOfLines={4}
+                      name="notes"
+                      onChange={text => {
+                        setFieldValue('notes', text);
+                      }}
+                      value={values?.notes}
+                      showError={errors.notes && touched.notes}
+                      error={errors.notes}
+                    />
+                  </View>
+                  <View style={styles.buttonContainer}>
+                    <Ripple
+                      rippleContainerBorderRadius={5}
+                      onPress={handleClose}>
+                      <Text style={styles.buttonText}>Cancel</Text>
+                    </Ripple>
+                    <Ripple
+                      rippleContainerBorderRadius={5}
+                      onPress={() => handleSubmit()}>
+                      <Text style={styles.buttonText}>
+                        {Object.keys(editNoteData).length ? 'Update' : 'Save'}
+                      </Text>
+                    </Ripple>
+                  </View>
+                </ScrollView>
               </>
             )}
           </Formik>

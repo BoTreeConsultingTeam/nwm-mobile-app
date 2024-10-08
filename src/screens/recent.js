@@ -33,7 +33,10 @@ const Recent = ({ navigation }) => {
   const [{ recentProjectList }] = useRecent();
 
   return (
-    <WithContainer pageTitle={'Recent'} actions={[]}>
+    <WithContainer
+      pageTitle={'Recent'}
+      actions={[]}
+      headerStyle={styles.header}>
       <View style={styles.main}>
         <FlatList
           data={recentProjectList}
@@ -50,6 +53,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.white,
     paddingBottom: 70,
+  },
+  header: {
+    backgroundColor: colors.white,
   },
 });
 export default Recent;

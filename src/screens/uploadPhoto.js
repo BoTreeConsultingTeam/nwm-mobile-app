@@ -11,20 +11,8 @@ import {
 } from 'react-native';
 import { colors } from '../styles';
 import { WithContainer } from '../components';
-import UploadDemo1 from '../assets/icons/upload-demo1.png';
-import UploadDemo3 from '../assets/icons/upload-demo2.png';
-import UploadDemo2 from '../assets/icons/upload-demo3.png';
-import UploadDemo4 from '../assets/icons/upload-demo4.png';
-import {
-  ActivityIndicator,
-  FAB,
-  Icon,
-  Portal,
-  Snackbar,
-} from 'react-native-paper';
-import { useCameraPermission } from 'react-native-vision-camera';
+import { FAB, Icon, Portal, Snackbar } from 'react-native-paper';
 import { useIsFocused } from '@react-navigation/native';
-import ImagePicker from 'react-native-image-crop-picker';
 import { useUploadPhoto } from '../hooks/useUploadPhoto';
 
 const UploadPhoto = ({ navigation, route }) => {
@@ -105,7 +93,9 @@ const UploadPhoto = ({ navigation, route }) => {
       onBackPress={() => navigation.goBack()}
       headerStyle={styles.header}>
       <View style={styles.main}>
-        <Snackbar visible={isLoading}>Image Uploading...</Snackbar>
+        <Snackbar style={{ zIndex: 1000 }} visible={isLoading}>
+          Image Uploading...
+        </Snackbar>
         {photoList.length ? (
           <FlatList
             contentContainerStyle={styles.listStyle}

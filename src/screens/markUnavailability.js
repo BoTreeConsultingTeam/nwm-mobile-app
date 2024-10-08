@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Button, DateTimePicker, Input, WithContainer } from '../components';
 import { Formik } from 'formik';
 import { colors, fontFaces, fontSizes } from '../styles';
@@ -100,24 +100,25 @@ const MarkUnavailability = ({ navigation }) => {
                     />
                   </View>
                 </View>
-                {calendarList.length ? (
-                  <View style={styles.unavailability}>
-                    <Text style={styles.title}>Your Unavailability</Text>
-
-                    {calendarList.map((item, index) => {
-                      return (
-                        <Text style={[styles.text, styles.dateText]}>
-                          {moment(item.startDate).format('MMM DD, YYYY')} -{' '}
-                          {moment(item.endDate).format('MMM DD, YYYY')}
-                        </Text>
-                      );
-                    })}
-                  </View>
-                ) : isLoading ? (
-                  <View style={styles.noContent}>
-                    <ActivityIndicator animating color={colors.primary} />
-                  </View>
-                ) : null}
+                <Text style={styles.title}>Your Unavailability</Text>
+                <ScrollView showsVerticalScrollIndicator={true}>
+                  {calendarList.length ? (
+                    <View style={styles.unavailability}>
+                      {calendarList.map((item, index) => {
+                        return (
+                          <Text style={[styles.text, styles.dateText]}>
+                            {moment(item.startDate).format('MMM DD, YYYY')} -{' '}
+                            {moment(item.endDate).format('MMM DD, YYYY')}
+                          </Text>
+                        );
+                      })}
+                    </View>
+                  ) : isLoading ? (
+                    <View style={styles.noContent}>
+                      <ActivityIndicator animating color={colors.primary} />
+                    </View>
+                  ) : null}
+                </ScrollView>
               </>
             );
           }}
@@ -185,7 +186,8 @@ const styles = StyleSheet.create({
   title: {
     color: colors.textNormal,
     ...fontFaces.regular.medium,
-    marginBottom: 10,
+    paddingHorizontal: 20,
+    paddingVertical: 20,
   },
   dateText: {
     marginBottom: 10,
@@ -195,7 +197,8 @@ const styles = StyleSheet.create({
   },
   unavailability: {
     paddingHorizontal: 20,
-    paddingVertical: 20,
+    paddingTop: 10,
+    paddingBottom: 20,
   },
   header: {
     backgroundColor: colors.white,

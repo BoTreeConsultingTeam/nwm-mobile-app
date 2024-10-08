@@ -20,9 +20,6 @@ const RequestItem = ({ item, index, handleProjectRequest }) => {
         style={styles.main}
       // onPress={() => navigation.navigate('photo-editor')}
       >
-        {/* <View style={styles.imageView}>
-          <Image source={item.image} style={styles.image} />
-        </View> */}
         <View style={styles.detailsView}>
           <View style={styles.title}>
             <Text style={styles.titleText}>{item.name}</Text>
@@ -59,9 +56,11 @@ const styles = StyleSheet.create({
   card: {
     marginRight: 10,
     marginBottom: 10,
-    height: 125,
+    // height: '',
+    flex: 1,
     marginLeft: 10,
     marginTop: 10,
+    paddingBottom: 10,
     backgroundColor: '#fff',
   },
   title: {

@@ -14,7 +14,7 @@ export const endpoints = {
   getProjectNotes: '/inspection/get-project-all-notes',
   addInspectionNote: '/inspection/add-update-inspection-notes',
   getInspectionNotes: '/inspection/get-inspection-all-notes',
-  deleteInspectionNote: '/inspection/delete-Project-Note',
+  deleteInspectionNote: '/inspection/delete-Inspection-Note',
   deleteProjectNote: '/inspection/delete-Project-Note',
   addNewPhoto: '/AwsS3/upload-images',
   getAllPhotos: '/inspection/all-imagepaths',

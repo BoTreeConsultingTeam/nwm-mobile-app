@@ -50,6 +50,7 @@ const useFetchAPIData = ({
           }
         })
         .catch(error => {
+          console.log('🚀 ~ useEffect ~ error:', error);
           setState({ ...state, isLoading: false, hasError: true });
           failureCb?.(error);
           !hideErrorMessage &&

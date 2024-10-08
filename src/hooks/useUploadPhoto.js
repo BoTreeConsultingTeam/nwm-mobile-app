@@ -3,6 +3,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { useFetchAPIData } from './common';
 import { deletePhoto, getAllPhotos, uploadNewPhoto } from '../api/uploadPhoto';
 import { useSelector } from 'react-redux';
+import { showToast } from '../utility/methods/other';
 
 export const useUploadPhoto = ({ navigation, route }) => {
   const [photoList, setPhotoList] = useState([]);
@@ -11,10 +12,7 @@ export const useUploadPhoto = ({ navigation, route }) => {
   const [deleteBody, setDeleteBody] = useState({});
 
   const user = useSelector(state => state.login.user);
-  console.log({
-    projectId: route.params?.projectId,
-    userId: user.id,
-  });
+
   useEffect(() => {
     setGetPhotoBody({
       projectId: route.params?.projectId,
@@ -23,48 +21,56 @@ export const useUploadPhoto = ({ navigation, route }) => {
   }, []);
 
   const handleAddPhoto = async () => {
-    ImagePicker.openCamera({
-      width: 300,
-      height: 400,
-      compressImageQuality: 0.5,
-    }).then(image => {
-      const formData = new FormData();
+    try {
+      ImagePicker.openCamera({
+        width: 300,
+        height: 400,
+        compressImageQuality: 0.5,
+      }).then(image => {
+        const formData = new FormData();
 
-      formData.append('files', {
-        uri: image.path,
-        type: 'image/jpg',
-        name: 'image.jpg',
-      });
-      setUploadBody({
-        data: formData,
-        userId: user.id,
-        projectId: route.params?.projectId,
-      });
-      // navigation.navigate('mediaPage', {
-      //   path: image.path,
-      // });
-    });
-  };
-
-  const handleGetPhoto = () => {
-    ImagePicker.openPicker({
-      mediaType: 'photo',
-      multiple: true,
-    }).then(photo => {
-      const formData = new FormData();
-      photo.map(item => {
         formData.append('files', {
-          uri: item.path,
+          uri: image.path,
           type: 'image/jpg',
           name: 'image.jpg',
         });
+        setUploadBody({
+          data: formData,
+          userId: user.id,
+          projectId: route.params?.projectId,
+        });
+        // navigation.navigate('mediaPage', {
+        //   path: image.path,
+        // });
       });
-      setUploadBody({
-        data: formData,
-        userId: user.id,
-        projectId: route.params?.projectId,
+    } catch (error) {
+      showToast('Oops, something went wrong!');
+    }
+  };
+
+  const handleGetPhoto = () => {
+    try {
+      ImagePicker.openPicker({
+        mediaType: 'photo',
+        multiple: true,
+      }).then(photo => {
+        const formData = new FormData();
+        photo.map(item => {
+          formData.append('files', {
+            uri: item.path,
+            type: 'image/jpg',
+            name: 'image.jpg',
+          });
+        });
+        setUploadBody({
+          data: formData,
+          userId: user.id,
+          projectId: route.params?.projectId,
+        });
       });
-    });
+    } catch (error) {
+      showToast('Oops, something went wrong!');
+    }
   };
 
   const handleDeleteImage = path => {

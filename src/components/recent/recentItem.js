@@ -34,7 +34,7 @@ const RecentItem = ({ navigation, item }) => {
           <View style={styles.date}>
             <DateIcon />
             <Text style={styles.dateText}>
-              {item.createdOn && moment(item.createdOn).format('DD/MM/YYYY')}
+              {item.createdOn && moment(item.createdOn).format('MM/DD/YYYY')}
             </Text>
           </View>
           <Text style={styles.descriptionText} numberOfLines={2}>

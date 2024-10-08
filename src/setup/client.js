@@ -11,7 +11,7 @@ const baseURL = getAPIBaseURL();
 // const baseURLWithAPI = `${baseURL}/api/v1/`;
 
 const client = axios.create({
-  baseURL: 'http://35.161.16.84:8000/api',
+  baseURL: baseURL,
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
